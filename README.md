@@ -1,5 +1,7 @@
 # riskcalc
 Risk calculator of chronic diseases based on age, BMI, etc
+CLASS 2/18 NOTES: look for normal distributions within each variable, if not normal may need to look at other ways
+
 
 #------------------------------------------------------------------------------------------------------------------------------
 
