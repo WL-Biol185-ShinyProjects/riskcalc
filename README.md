@@ -31,10 +31,7 @@ spread1,spread2,PPE - Three nonlinear measures of fundamental frequency variatio
 #---------------------
 Code: 
 #PARKINSONS
-dir.create("data")
-#move downloaded "parkinsons.data" file to data folder
 
-<<<<<<< HEAD
 parkinsons <- read.csv("data/parkinsons.data")
 head(parkinsons)
 
