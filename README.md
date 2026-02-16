@@ -5,27 +5,33 @@ Risk calculator of chronic diseases based on age, BMI, etc
 
 Alzheimers
 https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset?resource=download
+Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
+
+
+#------------------------------------------------------------------------------------------------------------------------------
 
 Chronic Kidney Disease
+Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
+family history of diabetes (0 - no, 1 - yes), cholesterol total, cholesterol(LDL), cholesterol(HDL), cholesterol(TAG), 
 
 
 #------------------------------------------------------------------------------------------------------------------------------
 
 Parkinson's
 https://www.kaggle.com/code/fratzcan/parkinson-s-disease-prediction/input
+Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
 
 
-#---------------------
+#-------------
 Code: 
-#PARKINSONS
-
 parkinsons <- read.csv("data/parkinsons_disease_data.csv")
 head(parkinsons)
 
 #------------------------------------------------------------------------------------------------------------------------------
 
-Huntington's
-ALS
+Diabetes
+Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
+
 
 #------------------------------------------------------------------------------------------------------------------------------
 
