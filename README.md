@@ -11,7 +11,7 @@ Dementia
 #------------------------------------------------------------------------------------------------------------------------------
 
 Parkinson's
-https://www.kaggle.com/datasets/vikasukani/parkinsons-disease-data-set?resource=download 
+https://www.kaggle.com/code/fratzcan/parkinson-s-disease-prediction/input
 
 Attribute Information:
 
