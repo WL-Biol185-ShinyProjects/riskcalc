@@ -1,13 +1,12 @@
 # riskcalc
 Risk calculator of chronic diseases based on age, BMI, etc
 
-HEAD
-This is a test
+Alzheimers
 
-this is a test
-i just spilled water over myself
+Dementia
 
-why did he fade bro
-ishaan lock in 
+Parkinson's
 
-Is mine working
+Huntington's
+
+ALS
