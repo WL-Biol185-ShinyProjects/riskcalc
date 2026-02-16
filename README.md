@@ -1,9 +1,14 @@
 # riskcalc
 Risk calculator of chronic diseases based on age, BMI, etc
 
+#------------------------------------------------------------------------------------------------------------------------------
+
 Alzheimers
+https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset?resource=download
 
 Dementia
+
+#------------------------------------------------------------------------------------------------------------------------------
 
 Parkinson's
 https://www.kaggle.com/datasets/vikasukani/parkinsons-disease-data-set?resource=download 
@@ -23,15 +28,22 @@ RPDE, D2 - Two nonlinear dynamical complexity measures
 DFA - Signal fractal scaling exponent
 spread1,spread2,PPE - Three nonlinear measures of fundamental frequency variation
 
-
-Huntington's
-
-ALS
------------------------------------------------
-
+#---------------------
+Code: 
 #PARKINSONS
 dir.create("data")
 #move downloaded "parkinsons.data" file to data folder
 
+<<<<<<< HEAD
 parkinsons <- read.csv("data/parkinsons.data")
 head(parkinsons)
+
+#------------------------------------------------------------------------------------------------------------------------------
+
+Huntington's
+ALS
+
+#------------------------------------------------------------------------------------------------------------------------------
+
+
+
