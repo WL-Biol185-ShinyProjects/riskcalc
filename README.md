@@ -4,6 +4,7 @@ Risk calculator of chronic diseases based on age, BMI, etc
 (Dias's Change)
 
 Alzheimers
+https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset?resource=download
 
 Dementia
 
