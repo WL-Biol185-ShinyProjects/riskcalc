@@ -1,7 +1,7 @@
 library(shiny)
 
 # Define server logic required to draw a histogram
-function(input, output) {
+function(input, output) { 
   
   output$distPlot <- renderPlot({
     
