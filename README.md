@@ -6,44 +6,32 @@ Alzheimers
 Dementia
 
 Parkinson's
+https://www.kaggle.com/datasets/vikasukani/parkinsons-disease-data-set?resource=download 
+
+Attribute Information:
+
+Matrix column entries (attributes):
+name - ASCII subject name and recording number
+MDVP:Fo(Hz) - Average vocal fundamental frequency
+MDVP:Fhi(Hz) - Maximum vocal fundamental frequency
+MDVP:Flo(Hz) - Minimum vocal fundamental frequency
+MDVP:Jitter(%), MDVP:Jitter(Abs), MDVP:RAP, MDVP:PPQ, Jitter:DDP - Several measures of variation in fundamental frequency
+MDVP:Shimmer,MDVP:Shimmer(dB),Shimmer:APQ3,Shimmer:APQ5,MDVP:APQ,Shimmer:DDA - Several measures of variation in amplitude
+NHR, HNR - Two measures of the ratio of noise to tonal components in the voice
+status - The health status of the subject (one) - Parkinson's, (zero) - healthy
+RPDE, D2 - Two nonlinear dynamical complexity measures
+DFA - Signal fractal scaling exponent
+spread1,spread2,PPE - Three nonlinear measures of fundamental frequency variation
+
 
 Huntington's
 
 ALS
+-----------------------------------------------
 
+#PARKINSONS
+dir.create("data")
+#move downloaded "parkinsons.data" file to data folder
 
-Here are datasets for 3 diseases - good balance for your timeline:
-1. Alzheimer's Disease
-OASIS (Open Access Series of Imaging Studies)
-Link: https://www.oasis-brains.org/
-Why: Completely open access, no lengthy applications
-Data: MRI data, clinical assessments, CDR scores, age, education, MMSE
-Size: ~400 subjects (OASIS-1), larger longitudinal cohorts available
-Perfect for: Alzheimer's risk/progression
-Alternative: ADNI (requires free registration but more comprehensive)
-2. Parkinson's Disease
-PPMI (Parkinson's Progression Markers Initiative)
-Link: https://www.ppmi-info.org/access-data-specimens/download-data
-Why: Specifically designed for Parkinson's research, free access
-Data: Motor scores, biomarkers, imaging, genetics, age, family history
-Size: 400+ Parkinson's patients + controls
-Perfect for: Early Parkinson's risk factors
-Alternative: mPower study data (more limited but easier)
-3. Stroke (my recommendation for #3)
-Why stroke instead of Huntington's/ALS:
-More common (better for risk calculator utility)
-Strong modifiable risk factors (BMI, BP, smoking)
-Shares vascular dementia pathway with Alzheimer's
-Better available data
-Framingham Heart Study - Stroke Risk
-Link: https://biolincc.nhlbi.nih.gov/studies/framcohort/
-Why: Gold standard for cardiovascular/stroke risk, has public calculators
-Data: Age, BP, diabetes, smoking, BMI, cholesterol
-Or just implement their published stroke risk score equations
-Alternative quick option: Use Kaggle:
-"Stroke Prediction Dataset" (free, cleaned, ready to use)
-"Brain Stroke Dataset"
-Easiest Path Forward:
-OASIS - download directly, CSV format
-Kaggle Parkinson's datasets - search "Parkinson's disease" (several available)
-Kaggle Stroke dataset - immediate access
+parkinsons <- read.csv("data/parkinsons.data")
+head(parkinsons)
