@@ -2,28 +2,50 @@
 title: "Checks for normality"
 output: html_document
 date: "2026-02-18"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-summary(cars)
+
+library(ggplot2)
+library(tidyverse)
+alzheimers <- read.csv("~/riskcalc/data/alzheimers_disease_data.csv")
+
+## BMI is fairly normal
+alzheimers %>%
+  ggplot(aes(x = BMI)) + geom_density(alpha = .5)
+## AlcoholConsumption is fairly normal
+alzheimers %>%
+  ggplot(aes(AlcoholConsumption)) + geom_density(alpha = .5)
+## PhyscialActivyt is fairly normal
+alzheimers %>%
+  ggplot(aes(PhysicalActivity)) + geom_density(alpha = .5)
+## DietQuality
+alzheimers %>%
+  ggplot(aes(DietQuality)) + geom_density(alpha = .5)
+## Sleep Quality
+alzheimers %>%
+  ggplot(aes(SleepQuality)) + geom_density(alpha = .5)
+## Gender
+alzheimers %>%
+  ggplot(aes(Gender)) + geom_density
+## Age
+alzheimers %>%
+  ggplot(aes(Age)) + geom_density(alpha = .5)
+##Ethnicity is not a normal distribution
+alzheimers %>%
+  ggplot(aes(Ethnicity)) + geom_density(alpha = .5)
+## Smoking
+alzheimers %>%
+  ggplot(aes(Smoking)) + geom_density(alpha = .5)
+
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
