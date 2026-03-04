@@ -6,10 +6,10 @@ ui <- navbarPage(
 
   header = tags$head(
     tags$style(HTML("
-      body { background-color: #f5f7fa; font-family: 'Segoe UI', sans-serif; }
-      .navbar { background-color: #2C7BB6 !important; }
+      body { background-color: #f5f7fa; font-family: 'Segoe UI', times-new-roman; }
+      .navbar { background-color: #283867 !important; }
       .navbar-brand, .navbar-nav > li > a { color: white !important; }
-      .navbar-nav > li > a:hover { background-color: #1a5f94 !important; }
+      .navbar-nav > li > a:hover { background-color: #2C7BB6 !important; }
       .well { background-color: #ffffff; border: 1px solid #dde3ea; border-radius: 8px;
               box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
       .section-label { font-size: 11px; font-weight: 700; color: #888;
@@ -27,24 +27,56 @@ ui <- navbarPage(
 
   # ── HOME ────────────────────────────────────────────────────────────────────
   tabPanel("Home",
-    div(class = "container mt-4",
-      div(class = "row justify-content-center",
-        div(class = "col-md-9 text-center",
-          h2("Chronic Disease Risk Calculator", style = "font-weight:700; color:#2C7BB6;"),
-          p("Estimate your personal risk for four major chronic diseases using clinically-informed inputs.",
-            style = "color:#666; font-size:16px;"),
-          tags$hr(),
-          fluidRow(
-            column(3, div(class = "home-card", tags$h1("🧠"), h5("Alzheimer's"),   p("Cognitive decline risk"))),
-            column(3, div(class = "home-card", tags$h1("🫘"), h5("Kidney Disease"), p("Chronic kidney disease risk"))),
-            column(3, div(class = "home-card", tags$h1("🚶"), h5("Parkinson's"),   p("Neurological disease risk"))),
-            column(3, div(class = "home-card", tags$h1("💉"), h5("Diabetes"),      p("Type 2 diabetes risk")))
-          ),
-          div(class = "disclaimer mt-4",
-            "⚠️ This tool is for educational purposes only. Always consult a healthcare professional.")
-        )
-      )
-    )
+           div(class = "container mt-4",
+               div(class = "row justify-content-center",
+                   div(class = "col-md-12 text-center",
+                       h2("Chronic Disease Risk Calculator", style = "font-weight:700; color:#2C7BB6;"),
+                       p("Estimate risk for four major chronic diseases using clinically-informed inputs.",
+                         style = "color:#666; font-size:16px;"),
+                       tags$hr(),
+                       fluidRow(style="margin-bottom:10px;",
+                                column(6,
+                                       div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
+                                           onclick = "document.querySelector('[data-value=\"Alzheimer\\'s\"]').click();",
+                                           tags$h1("🧠", style="font-size:75px; margin-top:-20px;"),
+                                           h5("Alzheimer's Disease", style="color:#2C7BB6; font-weight:700; font-size:30px"),
+                                           p("Alzheimer’s disease is a progressive, irreversible neurological disorder (the most common cause of dementia) that destroys memory, thinking skills, and eventually the ability to perform simple tasks.", style="color:#888; font-size:16.5px;")
+                                       )
+                                ),
+                                column(6,
+                                       div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
+                                           onclick = "document.querySelector('[data-value=\"Kidney Disease\"]').click();",
+                                           tags$h1("🫘", style="font-size:75px; margin-top:-20px;"),
+                                           h5("Kidney Disease", style="color:#2C7BB6; font-weight:700; font-size:30px"),
+                                           p("Kidney disease is the long-term, gradual loss of kidney function, preventing them from filtering waste, toxins, and excess fluid from the blood", style="color:#888; font-size:16.5px;")
+                                       )
+                                )
+                       ),
+                       fluidRow(
+                         column(6,
+                                div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
+                                    onclick = "document.querySelector('[data-value=\"Parkinson\\'s\"]').click();",
+                                    tags$h1("🚶", style="font-size:75px; margin-top:-20px;"),
+                                    h5("Parkinson's Disease", style="color:#2C7BB6; font-weight:700; font-size:30px"),
+                                    p("Parkinson’s disease is a progressive, neurodegenerative movement disorder of the central nervous system caused by the loss of dopamine-producing brain cells.", style="color:#888; font-size:16.5px;")
+                                )
+                         ),
+                         column(6,
+                                div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
+                                    onclick = "document.querySelector('[data-value=\"Diabetes\"]').click();",
+                                    tags$h1("💉", style="font-size:75px; margin-top:-20px;"),
+                                    h5("Type 2 Diabetes", style="color:#2C7BB6; font-weight:700; font-size:30px"),
+                                    p("Type 2 diabetes is a chronic condition where the body resists the effects of insulin or fails to produce enough, causing high blood sugar (glucose) levels.", style="color:#888; font-size:16.5px;")
+                                )
+                         )
+                       ),
+                       br(),
+                       div(class = "disclaimer mt-3",
+                           "⚠️ This tool is for educational purposes only. Always consult a healthcare professional."
+                       )
+                   )
+               )
+           )
   ),
 
   # ── ALZHEIMER'S ─────────────────────────────────────────────────────────────
@@ -184,24 +216,59 @@ ui <- navbarPage(
 
   # ── ABOUT ───────────────────────────────────────────────────────────────────
   tabPanel("About",
-    div(class = "container mt-4",
-      div(class = "row justify-content-center",
-        div(class = "col-md-7",
-          h4("About RiskCalc", style = "color:#2C7BB6; font-weight:700;"),
-          p("RiskCalc is a Shiny app developed for BIOL 185. It estimates risk for four major
-             chronic diseases using GLM logistic regression models trained on publicly available
-             Kaggle datasets."),
-          tags$hr(),
-          h5("Team"),
-          p("jkim-3 · acordova7 · diassshym · ishaanbhadouria"),
-          div(style = "background:#fff8e1; border-left:4px solid #f0ad4e; padding:12px;
-                       border-radius:4px; margin-top:16px;",
-            tags$b("Disclaimer: "),
-            "This app is for educational purposes only and does not constitute medical advice."
+  div(class = "container mt-4",
+    div(class = "row justify-content-center",
+      div(class = "col-md-7",
+        h4("About RiskCalc", style = "color:#2C7BB6; font-weight:700; font-size:18.5px;"),
+        p("RiskCalc is a Shiny app developed for BIOL 185. It estimates risk for four major chronic diseases using GLM logistic regression models trained on publicly available Kaggle datasets."),
+        tags$hr(),
+        h5("Team", style = "color:#2C7BB6; font-weight:700; font-size:18.5px;"),
+        br(),
+        fluidRow(
+          column(3, style = "text-align:center;",
+            img(src="aaronpfp.jpeg", style="width:150px; height:150px; border-radius:50%; object-fit:cover;"),
+            p(style="margin:0; line-height:1.6;", "Aaron Cordova", tags$br(), "W&L '27")
+          ),
+          column(3, style = "text-align:center;",
+            img(src="ishaanpfp.jpeg", style="width:150px; height:150px; border-radius:50%; object-fit:cover;"),
+            p(style="margin:0; line-height:1.6;", "Ishaan Bhadouria", tags$br(), "W&L '27")
+          ),
+          column(3, style = "text-align:center;",
+            img(src="jaehunpfp.jpeg", style="width:150px; height:150px; border-radius:50%; object-fit:cover;"),
+            p(style="margin:0; line-height:1.6;", "Jaehun Kim", tags$br(), "W&L '27")
+          ),
+          column(3, style = "text-align:center;",
+            img(src="diaspfp.jpeg", style="width:150px; height:150px; border-radius:50%; object-fit:cover;"),
+            p(style="margin:0; line-height:1.6;", "Dias Shymbay", tags$br(), "W&L '27")
           )
+        ),
+        br(),
+        tags$hr(),
+        # --- BIOS ---
+        h5("Aaron Cordova", style="color:#2C7BB6; font-weight:700; font-size:18.5px;"),
+        p(style="font-size:13px; color:#555;", "Student-athlete at Washington & Lee University pursuing a Neuroscience Major. Aaron plays Varsity Men's Soccer and has gained hands-on experience in coaching, leadership, and community engagement. He also holds CPR/BLS Training certification in Healthcare and has interned at the Platte City Area Chamber of Commerce."),
+        p(style="font-size:13px; color:#555;", tags$b("Email: "), "acordova@mail.wlu.edu"),
+        br(),
+        h5("Ishaan Bhadouria", style="color:#2C7BB6; font-weight:700; font-size:18.5px;"),
+        p(style="font-size:13px; color:#555;", "Student-athlete at Washington & Lee University pursuing a Neuroscience Major with an Entrepreneurship Minor. Ishaan competes on the basketball team while staying actively involved on campus as a Career Fellow, University Ambassador, and Community Assistant, with a passion for the healthcare field."),
+        p(style="font-size:13px; color:#555;", tags$b("Email: "), "ibhadouria@mail.wlu.edu"),
+        br(),
+        h5("Jaehun Kim", style="color:#2C7BB6; font-weight:700; font-size:18.5px;"),
+        p(style="font-size:13px; color:#555;", "Student at Washington & Lee University with experience in education and hospitality. Jaehun served as a Resident Teaching Assistant at Northwestern University's Center for Talent Development and previously worked as a Barista at W&L's Cafe 77, developing strong skills in customer service and team management."),
+        p(style="font-size:13px; color:#555;", tags$b("Email: "), "jkim@mail.wlu.edu"),
+        br(),
+        h5("Dias Shymbay", style="color:#2C7BB6; font-weight:700; font-size:18.5px;"),
+        p(style="font-size:13px; color:#555;", "Student at Washington & Lee University pursuing a BS in Neuroscience. Dias is actively involved in research, currently studying liposome-based chemotherapeutic treatments for brain cancer. He also serves as a Peer Tutor, Student Assistant at the Student Health and Counseling Center, and has completed internships in contract management and education volunteering internationally."),
+        p(style="font-size:13px; color:#555;", tags$b("Email: "), "dshymbay@mail.wlu.edu"),
+        br(),
+        tags$hr(),
+        # --- DISCLAIMER ---
+        div(style = "background:#fff8e1; border-left:4px solid #f0ad4e; padding:12px; border-radius:4px; margin-top:16px;",
+          tags$b("Disclaimer: "),
+          "This app is for educational purposes only and does not constitute medical advice."
         )
       )
     )
   )
+),
 )
-
