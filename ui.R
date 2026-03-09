@@ -22,6 +22,41 @@ ui <- navbarPage(
                    box-shadow: 0 2px 8px rgba(0,0,0,0.07); height: 100%; }
       .home-card h5 { color: #2C7BB6; margin-top: 10px; }
       .home-card p  { color: #888; font-size: 13px; }
+      
+      .quiz-option { 
+        background: white; 
+        border: 2px solid #ddd; 
+        border-radius: 8px; 
+        padding: 15px; 
+        margin: 8px 0; 
+        cursor: pointer; 
+        transition: all 0.2s;
+        font-size: 14px;
+      }
+      .quiz-option:hover { 
+        border-color: #2C7BB6; 
+        background: #f8fbff; 
+      }
+      .quiz-option.correct { 
+        border-color: #27ae60; 
+        background: #eafaf1; 
+      }
+      .quiz-option.incorrect { 
+        border-color: #e74c3c; 
+        background: #fdedec; 
+      }
+      .quiz-option.disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      .explanation-box {
+        background: #fff8e1;
+        border-left: 4px solid #f39c12;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 15px;
+        font-size: 13px;
+      }
     "))
   ),
 
@@ -214,6 +249,27 @@ ui <- navbarPage(
     )
   ),
 
+  # ── QUIZ ────────────────────────────────────────────────────────────────────
+  tabPanel("Quiz",
+           div(class = "container mt-4",
+               h4(class = "tab-title", "🧠 Test Your Knowledge"),
+               p("Challenge yourself with questions about chronic disease risk factors!", style = "color:#666;"),
+               
+               # Quiz intro card
+               uiOutput("quiz_intro_ui"),
+               
+               # Quiz question card
+               uiOutput("quiz_question_ui"),
+               
+               # Progress and score
+               uiOutput("quiz_progress_ui"),
+               
+               # Final results
+               uiOutput("quiz_results_ui")
+           )
+  ),
+  
+  
   # ── ABOUT ───────────────────────────────────────────────────────────────────
   tabPanel("About",
   div(class = "container mt-4",
