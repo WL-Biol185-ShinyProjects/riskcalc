@@ -151,22 +151,101 @@ server <- function(input, output, session) {
 
   # ── Diabetes ─────────────────────────────────────────────────────────────────
   output$db_result_ui <- renderUI({ waiting_card() })
-
+  
   observeEvent(input$calc_db, {
     output$db_result_ui <- renderUI({
       new_data <- data.frame(
-        FastingBloodSugar    = input$db_fasting_bg,
-        HbA1c                = input$db_hba1c,
-        FrequentUrination    = as.numeric(input$db_freq_urine),
-        Hypertension         = as.numeric(input$db_hypertension),
-        ExcessiveThirst      = as.numeric(input$db_thirst),
-        UnexplainedWeightLoss= as.numeric(input$db_weight_loss),
-        Smoking              = as.numeric(input$db_smoking),
-        BMI                  = input$db_bmi,
-        FamilyHistoryDiabetes= as.numeric(input$db_fam_diabetes)
+        FastingBloodSugar     = input$db_fasting_bg,
+        HbA1c                 = input$db_hba1c,
+        FrequentUrination     = as.numeric(input$db_freq_urine),
+        Hypertension          = as.numeric(input$db_hypertension),
+        ExcessiveThirst       = as.numeric(input$db_thirst),
+        UnexplainedWeightLoss = as.numeric(input$db_weight_loss),
+        Smoking               = as.numeric(input$db_smoking),
+        BMI                   = input$db_bmi,
+        FamilyHistoryDiabetes = as.numeric(input$db_fam_diabetes)
       )
       prob <- predict(db_model, newdata = new_data, type = "response")
-      result_card(prob, "Type 2 Diabetes")
+      
+      tagList(
+        result_card(prob, "Type 2 Diabetes"),
+        
+        # ── Collapsible box plot section ────────────────────────────────────────
+        tags$div(style = "margin-top:16px;",
+                 tags$button(
+                   class = "btn btn-outline-secondary btn-sm",
+                   `data-toggle` = "collapse",
+                   `data-target` = "#db_boxplot_section",
+                   "📦 Show / Hide Variable Distributions"
+                 ),
+                 tags$div(id = "db_boxplot_section", class = "collapse",
+                          tags$div(style = "margin-top:12px; background:#fff; border-radius:8px;
+                            padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08);",
+                                   h5("Your Values vs. Population Distribution",
+                                      style = "color:#444; margin-bottom:4px;"),
+                                   p("Red dashed line = your value. Blue = No Diabetes, Red = Diabetes.",
+                                     style = "color:#888; font-size:12px; margin-bottom:12px;"),
+                                   fluidRow(
+                                     column(6, plotOutput("db_box_fbs",  height = "220px")),
+                                     column(6, plotOutput("db_box_hba1c", height = "220px"))
+                                   ),
+                                   fluidRow(
+                                     column(6, plotOutput("db_box_bmi",  height = "220px")),
+                                     column(6, plotOutput("db_box_blank", height = "220px"))
+                                   )
+                          )
+                 )
+        )
+      )
+    })
+    
+    # ── Box plot renderers ──────────────────────────────────────────────────────
+    user_vals <- list(
+      fbs   = input$db_fasting_bg,
+      hba1c = input$db_hba1c,
+      bmi   = input$db_bmi
+    )
+    
+    db_plot <- db
+    db_plot$DiagnosisLabel <- ifelse(db_plot$Diagnosis == 1, "Diabetes", "No Diabetes")
+    db_plot$DiagnosisLabel <- factor(db_plot$DiagnosisLabel, levels = c("No Diabetes", "Diabetes"))
+    
+    make_db_boxplot <- function(col, user_val, xlabel) {
+      par(mar = c(5, 4, 3, 1))
+      boxplot(
+        db_plot[[col]] ~ db_plot$DiagnosisLabel,
+        col        = c("#5b9bd5", "#e74c3c"),
+        main       = xlabel,
+        xlab       = "",
+        ylab       = xlabel,
+        outline    = FALSE,
+        cex.main   = 0.95,
+        cex.axis   = 0.85,
+        border     = c("#2176ae", "#c0392b")
+      )
+      abline(h = user_val, col = "#c0392b", lwd = 2, lty = 2)
+      legend("topright", legend = "Your value",
+             col = "#c0392b", lwd = 2, lty = 2, cex = 0.75, bty = "n")
+    }
+    
+    output$db_box_fbs <- renderPlot({
+      make_db_boxplot("FastingBloodSugar", user_vals$fbs, "Fasting Blood\nSugar (mg/dL)")
+    })
+    
+    output$db_box_hba1c <- renderPlot({
+      make_db_boxplot("HbA1c", user_vals$hba1c, "HbA1c (%)")
+    })
+    
+    output$db_box_bmi <- renderPlot({
+      make_db_boxplot("BMI", user_vals$bmi, "BMI")
+    })
+    
+    output$db_box_blank <- renderPlot({
+      par(mar = c(0,0,0,0))
+      plot.new()
+      text(0.5, 0.5,
+           "Tip: Fasting Blood Sugar ≥ 126 mg/dL\nand HbA1c ≥ 6.5% are clinical\nthresholds for diabetes diagnosis.",
+           cex = 1.0, col = "#666", adj = 0.5)
     })
   })
   # ── QUIZ LOGIC ──────────────────────────────────────────────────────────────
