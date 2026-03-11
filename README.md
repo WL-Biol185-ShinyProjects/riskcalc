@@ -4,6 +4,12 @@ CLASS 2/18 NOTES: look for normal distributions within each variable, if not nor
 
 NEED TO ADD: Map (new dataset), quiz, info page (indiv. variable graphs - green/red variables), about me, pretty interface, check if variables are independent
 
+Alzheimer’s Rates by Country 2026:
+https://worldpopulationreview.com/country-rankings/alzheimers-rates-by-country
+
+Alzheimer's Disease Mortality in the USA
+https://www.cdc.gov/nchs/state-stats/deaths/alzheimers.html
+
 #------------------------------------------------------------------------------------------------------------------------------
 
 Alzheimers
