@@ -80,12 +80,210 @@ waiting_card <- function() {
   )
 }
 
+# ── Plot helpers ──────────────────────────────────────────────────────────────
+make_boxplot <- function(dataset, col, diagnosis_col, user_val, xlabel,
+                         no_label = "No", yes_label = "Yes") {
+  plot_data <- dataset
+  plot_data$DiagnosisLabel <- ifelse(plot_data[[diagnosis_col]] == 1, yes_label, no_label)
+  plot_data$DiagnosisLabel <- factor(plot_data$DiagnosisLabel, levels = c(no_label, yes_label))
+  par(mar = c(5, 4, 3, 1))
+  boxplot(
+    plot_data[[col]] ~ plot_data$DiagnosisLabel,
+    col = c("#5b9bd5", "#e74c3c"), main = xlabel, xlab = "", ylab = xlabel,
+    outline = FALSE, cex.main = 0.95, cex.axis = 0.85, border = c("#2176ae", "#c0392b")
+  )
+  abline(h = user_val, col = "#c0392b", lwd = 2, lty = 2)
+  legend("topright", legend = "Your value", col = "#c0392b", lwd = 2, lty = 2, cex = 0.75, bty = "n")
+}
+
+make_barchart <- function(dataset, col, diagnosis_col, user_val, xlabel,
+                          disease_label = "Disease") {
+  
+  n_no    <- sum(dataset[[col]] == 0)
+  n_yes   <- sum(dataset[[col]] == 1)
+  pct_no  <- mean(dataset[dataset[[col]] == 0, diagnosis_col]) * 100
+  pct_yes <- mean(dataset[dataset[[col]] == 1, diagnosis_col]) * 100
+  
+  ci <- function(p, n) {
+    p  <- p / 100
+    z  <- 1.96
+    centre <- (p + z^2 / (2*n)) / (1 + z^2 / n)
+    margin <- (z * sqrt(p*(1-p)/n + z^2/(4*n^2))) / (1 + z^2/n)
+    c(max(0, centre - margin), min(1, centre + margin)) * 100
+  }
+  
+  ci_no  <- ci(pct_no,  n_no)
+  ci_yes <- ci(pct_yes, n_yes)
+  
+  par(mar = c(5, 4, 4, 1))
+  bp <- barplot(
+    c(pct_no, pct_yes),
+    names.arg = c(paste("No", xlabel), paste("Yes", xlabel)),
+    col    = c("#5b9bd5", "#e74c3c"),
+    border = c("#2176ae", "#c0392b"),
+    main   = xlabel,
+    ylab   = paste0("% with ", disease_label),
+    ylim   = c(0, 115),
+    cex.main = 0.95, cex.axis = 0.85, cex.names = 0.8
+  )
+  
+  # error bars
+  arrows(bp, c(ci_no[1],  ci_yes[1]),
+         bp, c(ci_no[2],  ci_yes[2]),
+         angle = 90, code = 3, length = 0.08, lwd = 1.5, col = "#333")
+  
+  # % labels — white box behind text so they never clash with error bars
+  label_y <- c(ci_no[2], ci_yes[2]) + 6
+  rect(bp - 0.4, label_y - 3, bp + 0.4, label_y + 3,   # ← white bg box
+       col = "white", border = NA)
+  text(bp, label_y,
+       labels = paste0(round(c(pct_no, pct_yes), 1), "%"),
+       cex = 0.8, col = "#222", font = 2)                # ← bold dark text
+  
+  # "your group" highlight — gold/yellow outline, clearly visible on both bars
+  user_bar <- if (user_val == 1) 2 else 1
+  rect(bp[user_bar] - 0.5, 0, bp[user_bar] + 0.5, c(pct_no, pct_yes)[user_bar],
+       border = "#f0a500", lwd = 3, col = NA)             # ← gold instead of red
+  
+  legend("topright",
+         legend = c("Your group", "95% CI"),
+         col    = c("#f0a500", "#333"),                   # ← gold in legend too
+         lwd    = c(3, 1.5),
+         cex    = 0.75, bty = "n")
+}
+
+render_disease_plots <- function(prefix, cfg, input, output) {
+  ds       <- eval(cfg$dataset)
+  all_vars <- c(cfg$continuous, cfg$binary)
+  plot_ids <- paste0(prefix, "_p_", seq_along(all_vars))
+  pairs    <- split(plot_ids, ceiling(seq_along(plot_ids) / 2))
+  rows     <- lapply(pairs, function(pair) {
+    do.call(fluidRow, lapply(pair, function(id) column(6, plotOutput(id, height = "220px"))))
+  })
+  dist_ui <- tags$div(style = "margin-top:16px;",
+                      tags$button(class = "btn btn-outline-secondary btn-sm",
+                                  `data-toggle` = "collapse",
+                                  `data-target` = paste0("#", cfg$collapse_id),
+                                  "📊 Show / Hide Variable Distributions"),
+                      tags$div(id = cfg$collapse_id, class = "collapse",
+                               tags$div(style = "margin-top:12px; background:#fff; border-radius:8px;
+                        padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08);",
+                                        h5("Your Values vs. Population Distribution", style = "color:#444; margin-bottom:4px;"),
+                                        p("Boxplots: red dashed = your value. Bar charts: red outline = your group.",
+                                          style = "color:#888; font-size:12px; margin-bottom:12px;"),
+                                        rows
+                               )
+                      )
+  )
+  n_cont <- length(cfg$continuous)
+  for (i in seq_along(cfg$continuous)) {
+    local({
+      v  <- cfg$continuous[[i]]
+      id <- paste0(prefix, "_p_", i)
+      output[[id]] <- renderPlot({
+        make_boxplot(ds, v$col, cfg$diagnosis_col,
+                     eval(v$input, list(input = input)), v$label,
+                     no_label = cfg$no_label, yes_label = cfg$yes_label)
+      })
+    })
+  }
+  for (i in seq_along(cfg$binary)) {
+    local({
+      v  <- cfg$binary[[i]]
+      id <- paste0(prefix, "_p_", n_cont + i)
+      output[[id]] <- renderPlot({
+        make_barchart(ds, v$col, cfg$diagnosis_col,
+                      as.numeric(eval(v$input, list(input = input))), v$label,
+                      disease_label = cfg$disease_label)
+      })
+    })
+  }
+  dist_ui
+}
+
+# ── Disease config ────────────────────────────────────────────────────────────
+disease_config <- list(
+  alz = list(
+    dataset = quote(alz), diagnosis_col = "Diagnosis",
+    no_label = "No Alzheimer's", yes_label = "Alzheimer's",
+    disease_label = "Alzheimer's", collapse_id = "alz_plots_section",
+    continuous = list(
+      list(col = "FunctionalAssessment", input = quote(input$alz_functional), label = "Functional Assessment"),
+      list(col = "ADL",                  input = quote(input$alz_adl),        label = "ADL Score"),
+      list(col = "MMSE",                 input = quote(input$alz_mmse),       label = "MMSE Score"),
+      list(col = "SleepQuality",         input = quote(input$alz_sleep),      label = "Sleep Quality"),
+      list(col = "Age",                  input = quote(input$alz_age),        label = "Age (years)"),
+      list(col = "BMI",                  input = quote(input$alz_bmi),        label = "BMI")
+    ),
+    binary = list(
+      list(col = "MemoryComplaints",   input = quote(input$alz_memory),     label = "Memory Complaints"),
+      list(col = "BehavioralProblems", input = quote(input$alz_behavioral), label = "Behavioral Problems"),
+      list(col = "Smoking",            input = quote(input$alz_smoking),    label = "Smoking")
+    )
+  ),
+  ckd = list(
+    dataset = quote(ckd), diagnosis_col = "Diagnosis",
+    no_label = "No CKD", yes_label = "CKD",
+    disease_label = "CKD", collapse_id = "ckd_plots_section",
+    continuous = list(
+      list(col = "SerumCreatinine",   input = quote(input$ckd_creatinine),  label = "Serum Creatinine (mg/dL)"),
+      list(col = "GFR",               input = quote(input$ckd_gfr),         label = "GFR (mL/min)"),
+      list(col = "FastingBloodSugar", input = quote(input$ckd_fasting_bg),  label = "Fasting Blood Sugar (mg/dL)"),
+      list(col = "BUNLevels",         input = quote(input$ckd_bun),         label = "BUN Levels (mg/dL)"),
+      list(col = "ProteinInUrine",    input = quote(input$ckd_protein),     label = "Protein in Urine (g/day)"),
+      list(col = "HbA1c",             input = quote(input$ckd_hba1c),       label = "HbA1c (%)"),
+      list(col = "Itching",           input = quote(input$ckd_itching),     label = "Itching Severity"),
+      list(col = "MuscleCramps",      input = quote(input$ckd_cramps),      label = "Muscle Cramps (times/week)"),
+      list(col = "SystolicBP",        input = quote(input$ckd_systolicbp),  label = "Systolic BP (mmHg)"),
+      list(col = "BMI",               input = quote(input$ckd_bmi),         label = "BMI")
+    ),
+    binary = list()
+  ),
+  pk = list(
+    dataset = quote(pk), diagnosis_col = "Diagnosis",
+    no_label = "No Parkinson's", yes_label = "Parkinson's",
+    disease_label = "Parkinson's", collapse_id = "pk_plots_section",
+    continuous = list(
+      list(col = "UPDRS",                input = quote(input$pk_updrs),      label = "UPDRS Score"),
+      list(col = "FunctionalAssessment", input = quote(input$pk_functional), label = "Functional Assessment"),
+      list(col = "MoCA",                 input = quote(input$pk_moca),       label = "MoCA Score"),
+      list(col = "Age",                  input = quote(input$pk_age),        label = "Age (years)")
+    ),
+    binary = list(
+      list(col = "Tremor",              input = quote(input$pk_tremor),      label = "Tremor"),
+      list(col = "Rigidity",            input = quote(input$pk_rigidity),    label = "Rigidity"),
+      list(col = "Bradykinesia",        input = quote(input$pk_brady),       label = "Bradykinesia"),
+      list(col = "PosturalInstability", input = quote(input$pk_postural),    label = "Postural Instability"),
+      list(col = "Depression",          input = quote(input$pk_depression),  label = "Depression"),
+      list(col = "Diabetes",            input = quote(input$pk_diabetes),    label = "Diabetes")
+    )
+  ),
+  db = list(
+    dataset = quote(db), diagnosis_col = "Diagnosis",
+    no_label = "No Diabetes", yes_label = "Diabetes",
+    disease_label = "Diabetes", collapse_id = "db_plots_section",
+    continuous = list(
+      list(col = "FastingBloodSugar", input = quote(input$db_fasting_bg), label = "Fasting Blood Sugar (mg/dL)"),
+      list(col = "HbA1c",            input = quote(input$db_hba1c),       label = "HbA1c (%)"),
+      list(col = "BMI",              input = quote(input$db_bmi),         label = "BMI")
+    ),
+    binary = list(
+      list(col = "FrequentUrination",     input = quote(input$db_freq_urine),   label = "Frequent Urination"),
+      list(col = "Hypertension",          input = quote(input$db_hypertension), label = "Hypertension"),
+      list(col = "ExcessiveThirst",       input = quote(input$db_thirst),       label = "Excessive Thirst"),
+      list(col = "UnexplainedWeightLoss", input = quote(input$db_weight_loss),  label = "Unexplained Weight Loss"),
+      list(col = "Smoking",               input = quote(input$db_smoking),      label = "Smoking"),
+      list(col = "FamilyHistoryDiabetes", input = quote(input$db_fam_diabetes), label = "Family History: Diabetes")
+    )
+  )
+)
+
 # ── Server ────────────────────────────────────────────────────────────────────
 server <- function(input, output, session) {
-
-  # ── Alzheimer's ─────────────────────────────────────────────────────────────
+  
+  # ── Alzheimer's ──────────────────────────────────────────────────────────────
   output$alz_result_ui <- renderUI({ waiting_card() })
-
+  
   observeEvent(input$calc_alz, {
     output$alz_result_ui <- renderUI({
       new_data <- data.frame(
@@ -101,35 +299,41 @@ server <- function(input, output, session) {
         Smoking              = as.numeric(input$alz_smoking)
       )
       prob <- predict(alz_model, newdata = new_data, type = "response")
-      result_card(prob, "Alzheimer's Disease")
+      tagList(
+        result_card(prob, "Alzheimer's Disease"),
+        render_disease_plots("alz", disease_config$alz, input, output)
+      )
     })
   })
-
-  # ── Chronic Kidney Disease ───────────────────────────────────────────────────
+  
+  # ── Chronic Kidney Disease ────────────────────────────────────────────────────
   output$ckd_result_ui <- renderUI({ waiting_card() })
-
+  
   observeEvent(input$calc_ckd, {
     output$ckd_result_ui <- renderUI({
       new_data <- data.frame(
-        SerumCreatinine  = input$ckd_creatinine,
-        GFR              = input$ckd_gfr,
-        Itching          = input$ckd_itching,
-        FastingBloodSugar= input$ckd_fasting_bg,
-        MuscleCramps     = input$ckd_cramps,
-        BUNLevels        = input$ckd_bun,
-        ProteinInUrine   = input$ckd_protein,
-        SystolicBP       = input$ckd_systolicbp,
-        HbA1c            = input$ckd_hba1c,
-        BMI              = input$ckd_bmi
+        SerumCreatinine   = input$ckd_creatinine,
+        GFR               = input$ckd_gfr,
+        Itching           = input$ckd_itching,
+        FastingBloodSugar = input$ckd_fasting_bg,
+        MuscleCramps      = input$ckd_cramps,
+        BUNLevels         = input$ckd_bun,
+        ProteinInUrine    = input$ckd_protein,
+        SystolicBP        = input$ckd_systolicbp,
+        HbA1c             = input$ckd_hba1c,
+        BMI               = input$ckd_bmi
       )
       prob <- predict(ckd_model, newdata = new_data, type = "response")
-      result_card(prob, "Chronic Kidney Disease")
+      tagList(
+        result_card(prob, "Chronic Kidney Disease"),
+        render_disease_plots("ckd", disease_config$ckd, input, output)
+      )
     })
   })
-
-  # ── Parkinson's ──────────────────────────────────────────────────────────────
+  
+  # ── Parkinson's ───────────────────────────────────────────────────────────────
   output$pk_result_ui <- renderUI({ waiting_card() })
-
+  
   observeEvent(input$calc_pk, {
     output$pk_result_ui <- renderUI({
       new_data <- data.frame(
@@ -145,11 +349,14 @@ server <- function(input, output, session) {
         Diabetes             = as.numeric(input$pk_diabetes)
       )
       prob <- predict(pk_model, newdata = new_data, type = "response")
-      result_card(prob, "Parkinson's Disease")
+      tagList(
+        result_card(prob, "Parkinson's Disease"),
+        render_disease_plots("pk", disease_config$pk, input, output)
+      )
     })
   })
-
-  # ── Diabetes ─────────────────────────────────────────────────────────────────
+  
+  # ── Diabetes ──────────────────────────────────────────────────────────────────
   output$db_result_ui <- renderUI({ waiting_card() })
   
   observeEvent(input$calc_db, {
@@ -166,88 +373,14 @@ server <- function(input, output, session) {
         FamilyHistoryDiabetes = as.numeric(input$db_fam_diabetes)
       )
       prob <- predict(db_model, newdata = new_data, type = "response")
-      
       tagList(
         result_card(prob, "Type 2 Diabetes"),
-        
-        # ── Collapsible box plot section ────────────────────────────────────────
-        tags$div(style = "margin-top:16px;",
-                 tags$button(
-                   class = "btn btn-outline-secondary btn-sm",
-                   `data-toggle` = "collapse",
-                   `data-target` = "#db_boxplot_section",
-                   "📦 Show / Hide Variable Distributions"
-                 ),
-                 tags$div(id = "db_boxplot_section", class = "collapse",
-                          tags$div(style = "margin-top:12px; background:#fff; border-radius:8px;
-                            padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08);",
-                                   h5("Your Values vs. Population Distribution",
-                                      style = "color:#444; margin-bottom:4px;"),
-                                   p("Red dashed line = your value. Blue = No Diabetes, Red = Diabetes.",
-                                     style = "color:#888; font-size:12px; margin-bottom:12px;"),
-                                   fluidRow(
-                                     column(6, plotOutput("db_box_fbs",  height = "220px")),
-                                     column(6, plotOutput("db_box_hba1c", height = "220px"))
-                                   ),
-                                   fluidRow(
-                                     column(6, plotOutput("db_box_bmi",  height = "220px")),
-                                     column(6, plotOutput("db_box_blank", height = "220px"))
-                                   )
-                          )
-                 )
-        )
+        render_disease_plots("db", disease_config$db, input, output)
       )
-    })
-    
-    # ── Box plot renderers ──────────────────────────────────────────────────────
-    user_vals <- list(
-      fbs   = input$db_fasting_bg,
-      hba1c = input$db_hba1c,
-      bmi   = input$db_bmi
-    )
-    
-    db_plot <- db
-    db_plot$DiagnosisLabel <- ifelse(db_plot$Diagnosis == 1, "Diabetes", "No Diabetes")
-    db_plot$DiagnosisLabel <- factor(db_plot$DiagnosisLabel, levels = c("No Diabetes", "Diabetes"))
-    
-    make_db_boxplot <- function(col, user_val, xlabel) {
-      par(mar = c(5, 4, 3, 1))
-      boxplot(
-        db_plot[[col]] ~ db_plot$DiagnosisLabel,
-        col        = c("#5b9bd5", "#e74c3c"),
-        main       = xlabel,
-        xlab       = "",
-        ylab       = xlabel,
-        outline    = FALSE,
-        cex.main   = 0.95,
-        cex.axis   = 0.85,
-        border     = c("#2176ae", "#c0392b")
-      )
-      abline(h = user_val, col = "#c0392b", lwd = 2, lty = 2)
-      legend("topright", legend = "Your value",
-             col = "#c0392b", lwd = 2, lty = 2, cex = 0.75, bty = "n")
-    }
-    
-    output$db_box_fbs <- renderPlot({
-      make_db_boxplot("FastingBloodSugar", user_vals$fbs, "Fasting Blood\nSugar (mg/dL)")
-    })
-    
-    output$db_box_hba1c <- renderPlot({
-      make_db_boxplot("HbA1c", user_vals$hba1c, "HbA1c (%)")
-    })
-    
-    output$db_box_bmi <- renderPlot({
-      make_db_boxplot("BMI", user_vals$bmi, "BMI")
-    })
-    
-    output$db_box_blank <- renderPlot({
-      par(mar = c(0,0,0,0))
-      plot.new()
-      text(0.5, 0.5,
-           "Tip: Fasting Blood Sugar ≥ 126 mg/dL\nand HbA1c ≥ 6.5% are clinical\nthresholds for diabetes diagnosis.",
-           cex = 1.0, col = "#666", adj = 0.5)
     })
   })
+  
+  
   # ── QUIZ LOGIC ──────────────────────────────────────────────────────────────
   
   # Quiz questions database - tailored to YOUR specific models and risk factors
