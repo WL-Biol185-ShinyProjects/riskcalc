@@ -49,3 +49,31 @@ alzheimers %>%
 ```
 
 
+
+```{r}
+
+library(ggplot2)
+library(tidyverse)
+library(shiny)
+alzheimers <- read.csv("~/riskcalc/data/alzheimers_disease_data.csv")
+
+alzheimers %>%
+  ggplot(aes(Diagnosis, BMI, fill = Diagnosis)) + 
+  geom_boxplot() + 
+  ylim(0, 60)
+
+alzheimers %>%
+  mutate(Diagnosis = factor(Diagnosis, levels = c(0, 1), labels = c("No Alzheimer's", "Alzheimer's"))) %>%
+  ggplot(aes(Diagnosis, BMI, fill = Diagnosis)) + 
+  geom_boxplot() + 
+  ylim(15, 40)
+
+alzheimers %>%
+  mutate(Diagnosis = factor(Diagnosis, levels = c(0, 1), labels = c("No Alzheimer's", "Alzheimer's"))) %>%
+  ggplot(aes(Diagnosis, FunctionalAssessment, fill = Diagnosis)) + 
+  geom_boxplot() + 
+  ylim(0, 10)
+
+                
+
+```
