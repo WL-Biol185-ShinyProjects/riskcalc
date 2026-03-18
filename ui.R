@@ -205,6 +205,8 @@ ui <- navbarPage(
             sliderInput("pk_age",        "Age (years)", 20, 90, 65),
             selectInput("pk_depression", "Depression",  choices = c("No" = 0, "Yes" = 1)),
             selectInput("pk_diabetes",   "Diabetes",    choices = c("No" = 0, "Yes" = 1)),
+            selectInput("pk_sleepdisorders",   "Sleep Disorder",    choices = c("No" = 0, "Yes" = 1)),
+            selectInput("pk_traumaticbraininjury",   "Traumatic Brain Injury",    choices = c("No" = 0, "Yes" = 1)),
             actionButton("calc_pk", "Calculate Risk", class = "btn btn-warning btn-calc")
           )
         ),
