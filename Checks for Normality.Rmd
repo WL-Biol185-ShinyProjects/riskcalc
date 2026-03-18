@@ -74,6 +74,21 @@ alzheimers %>%
   geom_boxplot() + 
   ylim(0, 10)
 
+alzheimers %>%
+  mutate(Diagnosis = factor(Diagnosis, levels = c(0, 1), labels = c("No Alzheimer's", "Alzheimer's"))) %>%
+  ggplot(aes(Diagnosis, SleepQuality, fill = Diagnosis)) + 
+  geom_boxplot() + 
+  ylim(0, 10)
+
+alzheimers %>%
+  mutate(Diagnosis = factor(Diagnosis, levels = c(0, 1), labels = c("No Alzheimer's", "Alzheimer's"))) %>%
+  ggplot(aes(Diagnosis, Age, fill = Diagnosis)) + 
+  geom_boxplot() + 
+  ylim(30, 100)
                 
- 
+ alzheimers %>%
+  mutate(Diagnosis = factor(Diagnosis, levels = c(0, 1), labels = c("No Alzheimer's", "Alzheimer's"))) %>%
+  ggplot(aes(Diagnosis, MMSE, fill = Diagnosis)) + 
+  geom_boxplot() + 
+  ylim(0, 35)
 ```
