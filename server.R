@@ -256,8 +256,8 @@ disease_config <- list(
       list(col = "PosturalInstability", input = quote(input$pk_postural),    label = "Postural Instability"),
       list(col = "Depression",          input = quote(input$pk_depression),  label = "Depression"),
       list(col = "Diabetes",            input = quote(input$pk_diabetes),    label = "Diabetes"),
-      list(col = "SleepDisorders",      input = quote(input$pk_diabetes),    label = "SleepDisorders"),
-      list(col = "TraumaticBrainInjury",input = quote(input$pk_diabetes),    label = "SleepDisorders")
+      list(col = "SleepDisorders",      input = quote(input$pk_diabetes),    label = "Sleep Disorders"),
+      list(col = "TraumaticBrainInjury",input = quote(input$pk_diabetes),    label = "Traumatic Brain Injury")
     )
   ),
   db = list(
