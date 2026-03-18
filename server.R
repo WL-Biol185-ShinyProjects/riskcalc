@@ -10,7 +10,7 @@ pk  <- read.csv("data/parkinsons_disease_data.csv")
 # Top predictors: FunctionalAssessment, ADL, MemoryComplaints, MMSE,
 #                 BehavioralProblems, SleepQuality, EducationLevel, Age, BMI, Smoking
 alz_model <- glm(Diagnosis ~ FunctionalAssessment + ADL + MemoryComplaints + MMSE +
-                   BehavioralProblems + SleepQuality + EducationLevel + Age + BMI + Smoking,
+                   BehavioralProblems + EducationLevel,
                  data   = alz,
                  family = binomial)
 
