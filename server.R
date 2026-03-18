@@ -26,7 +26,7 @@ ckd_model <- glm(Diagnosis ~ SerumCreatinine + GFR + Itching + FastingBloodSugar
 # Top predictors: UPDRS, Tremor, FunctionalAssessment, Rigidity, Bradykinesia,
 #                 MoCA, PosturalInstability, Age, Depression, Diabetes
 pk_model <- glm(Diagnosis ~ UPDRS + Tremor + FunctionalAssessment + Rigidity +
-                  Bradykinesia + MoCA + PosturalInstability + Age + Depression + Diabetes,
+                  Bradykinesia + MoCA + PosturalInstability + Age + Depression + Diabetes + SleepDisorders + TraumaticBrainInjury,
                 data   = pk,
                 family = binomial)
 
@@ -255,7 +255,9 @@ disease_config <- list(
       list(col = "Bradykinesia",        input = quote(input$pk_brady),       label = "Bradykinesia"),
       list(col = "PosturalInstability", input = quote(input$pk_postural),    label = "Postural Instability"),
       list(col = "Depression",          input = quote(input$pk_depression),  label = "Depression"),
-      list(col = "Diabetes",            input = quote(input$pk_diabetes),    label = "Diabetes")
+      list(col = "Diabetes",            input = quote(input$pk_diabetes),    label = "Diabetes"),
+      list(col = "SleepDisorders",      input = quote(input$pk_diabetes),    label = "SleepDisorders"),
+      list(col = "TraumaticBrainInjury",input = quote(input$pk_diabetes),    label = "SleepDisorders")
     )
   ),
   db = list(
@@ -346,7 +348,11 @@ server <- function(input, output, session) {
         PosturalInstability  = as.numeric(input$pk_postural),
         Age                  = input$pk_age,
         Depression           = as.numeric(input$pk_depression),
-        Diabetes             = as.numeric(input$pk_diabetes)
+        Diabetes             = as.numeric(input$pk_diabetes),
+        SleepDisorders       = as.numeric(input$pk_diabetes),
+        TraumaticBrainInjury = as.numeric(input$pk_diabetes)
+        
+        
       )
       prob <- predict(pk_model, newdata = new_data, type = "response")
       tagList(
