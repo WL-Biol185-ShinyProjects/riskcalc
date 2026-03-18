@@ -26,7 +26,7 @@ ckd_model <- glm(Diagnosis ~ SerumCreatinine + GFR + Itching + FastingBloodSugar
 # Top predictors: UPDRS, Tremor, FunctionalAssessment, Rigidity, Bradykinesia,
 #                 MoCA, PosturalInstability, Age, Depression, Diabetes
 pk_model <- glm(Diagnosis ~ UPDRS + Tremor + FunctionalAssessment + Rigidity +
-                  Bradykinesia + MoCA + PosturalInstability + Age + Depression + Diabetes + SleepDisorders + TraumaticBrainInjury,
+                  Bradykinesia + MoCA + PosturalInstability + Age + Depression + Diabetes,
                 data   = pk,
                 family = binomial)
 
