@@ -34,7 +34,7 @@ pk_model <- glm(Diagnosis ~ UPDRS + Tremor + FunctionalAssessment + Rigidity +
 # Top predictors: FastingBloodSugar, HbA1c, FrequentUrination, Hypertension,
 #                 ExcessiveThirst, UnexplainedWeightLoss, Smoking, BMI, FamilyHistoryDiabetes
 db_model <- glm(Diagnosis ~ FastingBloodSugar + HbA1c + FrequentUrination + Hypertension +
-                  ExcessiveThirst + UnexplainedWeightLoss + Smoking + BMI + FamilyHistoryDiabetes,
+                  ExcessiveThirst + UnexplainedWeightLoss + Smoking,
                 data   = db,
                 family = binomial)
 
