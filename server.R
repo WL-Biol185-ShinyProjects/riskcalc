@@ -283,6 +283,33 @@ disease_config <- list(
 # ── Server ────────────────────────────────────────────────────────────────────
 server <- function(input, output, session) {
   
+  # NAVIGATION FLOW
+  observeEvent(input$go_alz_info, {
+    updateNavbarPage(session, "navbar", selected = "alz_info")
+  })
+  observeEvent(input$go_ckd_info, {
+    updateNavbarPage(session, "navbar", selected = "ckd_info")
+  })
+  observeEvent(input$go_pk_info, {
+    updateNavbarPage(session, "navbar", selected = "pk_info")
+  })
+  observeEvent(input$go_db_info, {
+    updateNavbarPage(session, "navbar", selected = "db_info")
+  })
+  
+  observeEvent(input$go_alz_calc, {
+    updateNavbarPage(session, "navbar", selected = "Alzheimer's")
+  })
+  observeEvent(input$go_ckd_calc, {
+    updateNavbarPage(session, "navbar", selected = "Kidney Disease")
+  })
+  observeEvent(input$go_pk_calc, {
+    updateNavbarPage(session, "navbar", selected = "Parkinson's")
+  })
+  observeEvent(input$go_db_calc, {
+    updateNavbarPage(session, "navbar", selected = "Diabetes")
+  })
+  
   # ── Alzheimer's ──────────────────────────────────────────────────────────────
   output$alz_result_ui <- renderUI({ waiting_card() })
   
