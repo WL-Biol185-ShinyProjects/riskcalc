@@ -57,6 +57,15 @@ ui <- navbarPage(
         margin-top: 15px;
         font-size: 13px;
       }
+      
+            /* 🔥 HIDE INFO TABS FROM NAVBAR */
+      li a[data-value='alz_info'],
+      li a[data-value='ckd_info'],
+      li a[data-value='pk_info'],
+      li a[data-value='db_info'] {
+        display: none !important;
+      }
+      
     "))
   ),
 
@@ -72,7 +81,7 @@ ui <- navbarPage(
                        fluidRow(style="margin-bottom:10px;",
                                 column(6,
                                        div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
-                                           onclick = "document.querySelector('[data-value=\"Alzheimer\\'s\"]').click();",
+                                           onclick = "Shiny.setInputValue('go_alz_info', Math.random())",
                                            tags$h1("🧠", style="font-size:75px; margin-top:-20px;"),
                                            h5("Alzheimer's Disease", style="color:#2C7BB6; font-weight:700; font-size:30px"),
                                            p("Alzheimer’s disease is a progressive, irreversible neurological disorder (the most common cause of dementia) that destroys memory, thinking skills, and eventually the ability to perform simple tasks.", style="color:#888; font-size:16.5px;")
@@ -80,7 +89,7 @@ ui <- navbarPage(
                                 ),
                                 column(6,
                                        div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
-                                           onclick = "document.querySelector('[data-value=\"Kidney Disease\"]').click();",
+                                           onclick = "Shiny.setInputValue('go_ckd_info', Math.random())",
                                            tags$h1("🫘", style="font-size:75px; margin-top:-20px;"),
                                            h5("Kidney Disease", style="color:#2C7BB6; font-weight:700; font-size:30px"),
                                            p("Kidney disease is the long-term, gradual loss of kidney function, preventing them from filtering waste, toxins, and excess fluid from the blood", style="color:#888; font-size:16.5px;")
@@ -90,7 +99,7 @@ ui <- navbarPage(
                        fluidRow(
                          column(6,
                                 div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
-                                    onclick = "document.querySelector('[data-value=\"Parkinson\\'s\"]').click();",
+                                    onclick = "Shiny.setInputValue('go_pk_info', Math.random())",
                                     tags$h1("🚶", style="font-size:75px; margin-top:-20px;"),
                                     h5("Parkinson's Disease", style="color:#2C7BB6; font-weight:700; font-size:30px"),
                                     p("Parkinson’s disease is a progressive, neurodegenerative movement disorder of the central nervous system caused by the loss of dopamine-producing brain cells.", style="color:#888; font-size:16.5px;")
@@ -98,7 +107,7 @@ ui <- navbarPage(
                          ),
                          column(6,
                                 div(style = "border:1px solid #ddd; border-radius:10px; padding:60px 15px; text-align:center; height:300px; cursor:pointer; margin:0px 5px; background:white;",
-                                    onclick = "document.querySelector('[data-value=\"Diabetes\"]').click();",
+                                    onclick = "Shiny.setInputValue('go_db_info', Math.random())",
                                     tags$h1("💉", style="font-size:75px; margin-top:-20px;"),
                                     h5("Type 2 Diabetes", style="color:#2C7BB6; font-weight:700; font-size:30px"),
                                     p("Type 2 diabetes is a chronic condition where the body resists the effects of insulin or fails to produce enough, causing high blood sugar (glucose) levels.", style="color:#888; font-size:16.5px;")
@@ -114,6 +123,43 @@ ui <- navbarPage(
            )
   ),
 
+  tabPanel("alz_info",
+           div(style="padding:30px;",
+               h2("🧠 Alzheimer's Disease"),
+               p("A progressive brain disorder affecting memory and thinking."),
+               p("Risk increases with age, cognitive decline, and lifestyle factors."),
+               actionButton("go_alz_calc","Go to Calculator →", class="btn btn-primary")
+           )
+  ),
+  
+  tabPanel("ckd_info",
+           div(style="padding:30px;",
+               h2("🫘 Kidney Disease"),
+               p("A condition where kidneys lose the ability to filter waste."),
+               p("Risk factors include high blood pressure, diabetes, and lifestyle."),
+               actionButton("go_ckd_calc","Go to Calculator →", class="btn btn-success")
+           )
+  ),
+  
+  tabPanel("pk_info",
+           div(style="padding:30px;",
+               h2("🚶 Parkinson's Disease"),
+               p("A neurodegenerative disorder affecting movement."),
+               p("Caused by loss of dopamine-producing neurons."),
+               actionButton("go_pk_calc","Go to Calculator →", class="btn btn-warning")
+           )
+  ),
+  
+  tabPanel("db_info",
+           div(style="padding:30px;",
+               h2("💉 Type 2 Diabetes"),
+               p("A condition where the body cannot regulate blood sugar properly."),
+               p("Often linked to lifestyle, weight, and genetics."),
+               actionButton("go_db_calc","Go to Calculator →", class="btn btn-danger")
+           )
+  ),
+  
+  
   # ── ALZHEIMER'S ─────────────────────────────────────────────────────────────
   # Key predictors: FunctionalAssessment, ADL, MemoryComplaints, MMSE,
   #                 BehavioralProblems, SleepQuality, EducationLevel, Age, BMI, Smoking

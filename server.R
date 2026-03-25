@@ -283,6 +283,34 @@ disease_config <- list(
 # ── Server ────────────────────────────────────────────────────────────────────
 server <- function(input, output, session) {
   
+nav_from_button <- reactiveVal(FALSE)
+  
+observeEvent(input$navbar, ignoreInit = TRUE, {
+  
+  # 🛑 If navigation came from a button → DO NOTHING
+  if (nav_from_button()) {
+    nav_from_button(FALSE)
+    return()
+  }
+  
+  if (input$navbar == "Alzheimer's") {
+    updateNavbarPage(session, "navbar", selected = "alz_info")
+  }
+  
+  if (input$navbar == "Kidney Disease") {
+    updateNavbarPage(session, "navbar", selected = "ckd_info")
+  }
+  
+  if (input$navbar == "Parkinson's") {
+    updateNavbarPage(session, "navbar", selected = "pk_info")
+  }
+  
+  if (input$navbar == "Diabetes") {
+    updateNavbarPage(session, "navbar", selected = "db_info")
+  }
+})
+  
+  
   # NAVIGATION FLOW
   observeEvent(input$go_alz_info, {
     updateNavbarPage(session, "navbar", selected = "alz_info")
@@ -298,18 +326,24 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$go_alz_calc, {
+    nav_from_button(TRUE)
     updateNavbarPage(session, "navbar", selected = "Alzheimer's")
   })
+  
   observeEvent(input$go_ckd_calc, {
+    nav_from_button(TRUE)
     updateNavbarPage(session, "navbar", selected = "Kidney Disease")
   })
+  
   observeEvent(input$go_pk_calc, {
+    nav_from_button(TRUE)
     updateNavbarPage(session, "navbar", selected = "Parkinson's")
   })
+  
   observeEvent(input$go_db_calc, {
+    nav_from_button(TRUE)
     updateNavbarPage(session, "navbar", selected = "Diabetes")
   })
-  
   # ── Alzheimer's ──────────────────────────────────────────────────────────────
   output$alz_result_ui <- renderUI({ waiting_card() })
   
