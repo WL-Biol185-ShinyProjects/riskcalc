@@ -344,6 +344,26 @@ observeEvent(input$navbar, ignoreInit = TRUE, {
     nav_from_button(TRUE)
     updateNavbarPage(session, "navbar", selected = "Diabetes")
   })
+  
+  observeEvent(input$go_alz_calc2, {
+    nav_from_button(TRUE)
+    updateNavbarPage(session, "navbar", selected = "Alzheimer's")
+  })
+  
+  observeEvent(input$go_ckd_calc2, {
+    nav_from_button(TRUE)
+    updateNavbarPage(session, "navbar", selected = "Kidney Disease")
+  })
+  
+  observeEvent(input$go_pk_calc2, {
+    nav_from_button(TRUE)
+    updateNavbarPage(session, "navbar", selected = "Parkinson's")
+  })
+  
+  observeEvent(input$go_db_calc2, {
+    nav_from_button(TRUE)
+    updateNavbarPage(session, "navbar", selected = "Diabetes")
+  })
   # ── Alzheimer's ──────────────────────────────────────────────────────────────
   output$alz_result_ui <- renderUI({ waiting_card() })
   
