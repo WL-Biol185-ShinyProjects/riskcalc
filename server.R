@@ -375,11 +375,7 @@ observeEvent(input$navbar, ignoreInit = TRUE, {
         MemoryComplaints     = as.numeric(input$alz_memory),
         MMSE                 = input$alz_mmse,
         BehavioralProblems   = as.numeric(input$alz_behavioral),
-        SleepQuality         = input$alz_sleep,
-        EducationLevel       = as.numeric(input$alz_edu),
-        Age                  = input$alz_age,
-        BMI                  = input$alz_bmi,
-        Smoking              = as.numeric(input$alz_smoking)
+        EducationLevel       = as.numeric(input$alz_edu)
       )
       prob <- predict(alz_model, newdata = new_data, type = "response")
       tagList(
@@ -430,8 +426,8 @@ observeEvent(input$navbar, ignoreInit = TRUE, {
         Age                  = input$pk_age,
         Depression           = as.numeric(input$pk_depression),
         Diabetes             = as.numeric(input$pk_diabetes),
-        SleepDisorders       = as.numeric(input$pk_diabetes),
-        TraumaticBrainInjury = as.numeric(input$pk_diabetes)
+        SleepDisorders       = as.numeric(input$pk_sleepdisorders),
+        TraumaticBrainInjury = as.numeric(input$pk_traumaticbraininjury)
         
         
       )
@@ -455,9 +451,7 @@ observeEvent(input$navbar, ignoreInit = TRUE, {
         Hypertension          = as.numeric(input$db_hypertension),
         ExcessiveThirst       = as.numeric(input$db_thirst),
         UnexplainedWeightLoss = as.numeric(input$db_weight_loss),
-        Smoking               = as.numeric(input$db_smoking),
-        BMI                   = input$db_bmi,
-        FamilyHistoryDiabetes = as.numeric(input$db_fam_diabetes)
+        Smoking               = as.numeric(input$db_smoking)
       )
       prob <- predict(db_model, newdata = new_data, type = "response")
       tagList(
