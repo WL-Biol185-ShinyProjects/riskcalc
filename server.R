@@ -210,15 +210,11 @@ disease_config <- list(
     continuous = list(
       list(col = "FunctionalAssessment", input = quote(input$alz_functional), label = "Functional Assessment"),
       list(col = "ADL",                  input = quote(input$alz_adl),        label = "ADL Score"),
-      list(col = "MMSE",                 input = quote(input$alz_mmse),       label = "MMSE Score"),
-      list(col = "SleepQuality",         input = quote(input$alz_sleep),      label = "Sleep Quality"),
-      list(col = "Age",                  input = quote(input$alz_age),        label = "Age (years)"),
-      list(col = "BMI",                  input = quote(input$alz_bmi),        label = "BMI")
+      list(col = "MMSE",                 input = quote(input$alz_mmse),       label = "MMSE Score")
     ),
     binary = list(
       list(col = "MemoryComplaints",   input = quote(input$alz_memory),     label = "Memory Complaints"),
-      list(col = "BehavioralProblems", input = quote(input$alz_behavioral), label = "Behavioral Problems"),
-      list(col = "Smoking",            input = quote(input$alz_smoking),    label = "Smoking")
+      list(col = "BehavioralProblems", input = quote(input$alz_behavioral), label = "Behavioral Problems")
     )
   ),
   ckd = list(
@@ -234,8 +230,7 @@ disease_config <- list(
       list(col = "HbA1c",             input = quote(input$ckd_hba1c),       label = "HbA1c (%)"),
       list(col = "Itching",           input = quote(input$ckd_itching),     label = "Itching Severity"),
       list(col = "MuscleCramps",      input = quote(input$ckd_cramps),      label = "Muscle Cramps (times/week)"),
-      list(col = "SystolicBP",        input = quote(input$ckd_systolicbp),  label = "Systolic BP (mmHg)"),
-      list(col = "BMI",               input = quote(input$ckd_bmi),         label = "BMI")
+      list(col = "SystolicBP",        input = quote(input$ckd_systolicbp),  label = "Systolic BP (mmHg)")
     ),
     binary = list()
   ),
@@ -274,8 +269,7 @@ disease_config <- list(
       list(col = "Hypertension",          input = quote(input$db_hypertension), label = "Hypertension"),
       list(col = "ExcessiveThirst",       input = quote(input$db_thirst),       label = "Excessive Thirst"),
       list(col = "UnexplainedWeightLoss", input = quote(input$db_weight_loss),  label = "Unexplained Weight Loss"),
-      list(col = "Smoking",               input = quote(input$db_smoking),      label = "Smoking"),
-      list(col = "FamilyHistoryDiabetes", input = quote(input$db_fam_diabetes), label = "Family History: Diabetes")
+      list(col = "Smoking",               input = quote(input$db_smoking),      label = "Smoking")
     )
   )
 )
