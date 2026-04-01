@@ -6,51 +6,6 @@ ckd <- read.csv("data/Chronic_Kidney_Dsease_data.csv")
 db  <- read.csv("data/diabetes_data.csv")
 pk  <- read.csv("data/parkinsons_disease_data.csv")
 
-# ── Variable Label Mappings for Heat Maps ──────────────────────────────────
-var_labels <- list(
-  # Alzheimer's
-  FunctionalAssessment = "Functional Score",
-  ADL = "ADL Score",
-  MemoryComplaints = "Memory Complaints",
-  MMSE = "MMSE Score",
-  BehavioralProblems = "Behavioral Problems",
-  EducationLevel = "Education Level",
-  
-  # Kidney Disease
-  SerumCreatinine = "Serum Creatinine",
-  GFR = "GFR",
-  Itching = "Itching",
-  FastingBloodSugar = "Fasting Blood Sugar",
-  MuscleCramps = "Muscle Cramps",
-  BUNLevels = "BUN Levels",
-  ProteinInUrine = "Protein in Urine",
-  SystolicBP = "Systolic BP",
-  HbA1c = "HbA1c",
-  BMI = "BMI",
-  Edema = "Edema",
-  
-  # Parkinson's
-  UPDRS = "UPDRS Score",
-  Tremor = "Tremor",
-  Rigidity = "Rigidity",
-  Bradykinesia = "Bradykinesia",
-  MoCA = "MoCA Score",
-  PosturalInstability = "Postural Instability",
-  Age = "Age",
-  Depression = "Depression",
-  Diabetes = "Diabetes",
-  TraumaticBrainInjury = "Brain Injury",
-  SleepDisorders = "Sleep Disorders",
-  
-  # Diabetes
-  FrequentUrination = "Frequent Urination",
-  Hypertension = "Hypertension",
-  ExcessiveThirst = "Excessive Thirst",
-  UnexplainedWeightLoss = "Weight Loss",
-  Smoking = "Smoking",
-  BlurredVision = "Blurred Vision"
-)
-
 # Alzheimer's GLM
 # Top predictors: FunctionalAssessment, ADL, MemoryComplaints, MMSE,
 #                 BehavioralProblems, SleepQuality, EducationLevel, Age, BMI, Smoking
@@ -84,7 +39,7 @@ db_model <- glm(Diagnosis ~ FastingBloodSugar + HbA1c + FrequentUrination + Hype
                 family = binomial)
 
 # ── Result card renderer ──────────────────────────────────────────────────────
-result_card <- function(prob, disease, plot_id) {
+result_card <- function(prob, disease) {
   pct       <- round(prob * 100, 1)
   level     <- if (pct < 30) "Low" else if (pct < 60) "Moderate" else "High"
   bar_color <- if (pct < 30) "success" else if (pct < 60) "warning" else "danger"
@@ -92,34 +47,27 @@ result_card <- function(prob, disease, plot_id) {
   bg_color  <- switch(bar_color, success = "#eafaf1", warning = "#fef9e7", danger = "#fdedec")
   txt_color <- switch(bar_color, success = "#1e8449", warning = "#b7770d", danger = "#c0392b")
   border    <- paste0("border-left:4px solid ", hex_color, ";")
-  
   msg <- switch(level,
-                "Low"      = "Your inputs suggest a relatively low risk. Keep maintaining healthy habits!",
-                "Moderate" = "Your inputs suggest a moderate risk. Consider discussing lifestyle changes with your doctor.",
-                "High"     = "Your inputs suggest an elevated risk. We strongly recommend consulting a healthcare provider."
+    "Low"      = "Your inputs suggest a relatively low risk. Keep maintaining healthy habits!",
+    "Moderate" = "Your inputs suggest a moderate risk. Consider discussing lifestyle changes with your doctor.",
+    "High"     = "Your inputs suggest an elevated risk. We strongly recommend consulting a healthcare provider."
   )
-  
+
   div(class = "result-box",
-      style = "background:#fff; border-radius:8px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-top:10px;",
-      h4(paste("Estimated", disease, "Risk"), style = "color:#444; margin-bottom:4px;"),
-      h1(paste0(pct, "%"), style = paste0("font-weight:800; color:", hex_color, ";")),
-      tags$div(class = "progress", style = "height:22px; border-radius:6px; margin-bottom:12px;",
-               tags$div(class = paste0("progress-bar bg-", bar_color),
-                        role = "progressbar",
-                        style = paste0("width:", pct, "%; font-size:14px; font-weight:600;"),
-                        paste0(pct, "%"))
-      ),
-      tags$div(
-        style = paste0("padding:12px; border-radius:6px; font-size:13px; background:", bg_color,
-                       "; color:", txt_color, "; ", border),
-        tags$b(paste0(level, " Risk — ")), msg
-      ),
-      
-      # 🔥 ADD HEAT MAP HERE
-      tags$div(style = "margin-top:20px;",
-               h5("🔥 What's Driving Your Risk?", style = "color:#444; margin-bottom:10px;"),
-               plotOutput(plot_id, height = "350px")
-      )
+    style = "background:#fff; border-radius:8px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-top:10px;",
+    h4(paste("Estimated", disease, "Risk"), style = "color:#444; margin-bottom:4px;"),
+    h1(paste0(pct, "%"), style = paste0("font-weight:800; color:", hex_color, ";")),
+    tags$div(class = "progress", style = "height:22px; border-radius:6px; margin-bottom:12px;",
+      tags$div(class = paste0("progress-bar bg-", bar_color),
+               role = "progressbar",
+               style = paste0("width:", pct, "%; font-size:14px; font-weight:600;"),
+               paste0(pct, "%"))
+    ),
+    tags$div(
+      style = paste0("padding:12px; border-radius:6px; font-size:13px; background:", bg_color,
+                     "; color:", txt_color, "; ", border),
+      tags$b(paste0(level, " Risk — ")), msg
+    )
   )
 }
 
@@ -203,78 +151,6 @@ make_barchart <- function(dataset, col, diagnosis_col, user_val, xlabel,
          lwd    = c(3, 1.5),
          cex    = 0.75, bty = "n")
 }
-
-
-# ── Variable Contribution Heat Map ──────────────────────────────────────────
-make_contribution_heatmap <- function(model, user_data, dataset, var_labels) {
-  # Get coefficients (excluding intercept)
-  coefs <- coef(model)[-1]
-  
-  # Get dataset means for each predictor
-  predictor_names <- names(coefs)
-  dataset_means <- sapply(predictor_names, function(var) mean(dataset[[var]], na.rm = TRUE))
-  
-  # Calculate raw contributions (coefficient × deviation from mean)
-  user_vals <- unlist(user_data[predictor_names])
-  deviations <- user_vals - dataset_means
-  raw_contributions <- coefs * deviations
-  
-  # Convert to absolute contributions and normalize to percentages
-  abs_contributions <- abs(raw_contributions)
-  total <- sum(abs_contributions)
-  pct_contributions <- if(total > 0) (abs_contributions / total) * 100 else rep(0, length(abs_contributions))
-  
-  # Determine if variable increases (+) or decreases (-) risk
-  direction <- ifelse(raw_contributions > 0, "+", "-")
-  
-  # Create data frame for plotting
-  contrib_df <- data.frame(
-    Variable = var_labels[predictor_names],
-    Value = round(user_vals, 2),
-    Contribution = round(pct_contributions, 1),
-    Direction = direction,
-    stringsAsFactors = FALSE
-  )
-  
-  # Sort by contribution (descending)
-  contrib_df <- contrib_df[order(-contrib_df$Contribution), ]
-  
-  # Create color palette (red = increases risk, blue = decreases risk)
-  colors <- ifelse(contrib_df$Direction == "+", 
-                   rgb(0.8, 0.2, 0.2, alpha = contrib_df$Contribution/100),  # Red
-                   rgb(0.2, 0.4, 0.8, alpha = contrib_df$Contribution/100))  # Blue
-  
-  # Plot
-  par(mar = c(5, 10, 3, 2))
-  barplot(
-    contrib_df$Contribution,
-    names.arg = contrib_df$Variable,
-    horiz = TRUE,
-    las = 1,
-    col = colors,
-    border = NA,
-    xlab = "Contribution to Risk Score (%)",
-    main = "Variable Importance Heat Map",
-    xlim = c(0, max(contrib_df$Contribution) * 1.1),
-    cex.names = 0.8,
-    cex.main = 0.95
-  )
-  
-  # Add percentage labels
-  text(contrib_df$Contribution + 2, 
-       seq(0.7, by = 1.2, length.out = nrow(contrib_df)),
-       paste0(contrib_df$Contribution, "%"),
-       pos = 4, cex = 0.75, col = "#333")
-  
-  # Add legend
-  legend("bottomright", 
-         legend = c("Increases Risk", "Decreases Risk"),
-         fill = c(rgb(0.8, 0.2, 0.2, 0.7), rgb(0.2, 0.4, 0.8, 0.7)),
-         border = NA,
-         cex = 0.75,
-         bty = "n")
-}
-
 
 render_disease_plots <- function(prefix, cfg, input, output) {
   ds       <- eval(cfg$dataset)
@@ -496,14 +372,8 @@ observeEvent(input$navbar, ignoreInit = TRUE, {
         EducationLevel       = as.numeric(input$alz_edu)
       )
       prob <- predict(alz_model, newdata = new_data, type = "response")
-      
-      # 🔥 RENDER HEAT MAP
-      output$alz_heatmap <- renderPlot({
-        make_contribution_heatmap(alz_model, new_data, alz, var_labels)
-      })
-      
       tagList(
-        result_card(prob, "Alzheimer's Disease", "alz_heatmap"),
+        result_card(prob, "Alzheimer's Disease"),
         render_disease_plots("alz", disease_config$alz, input, output)
       )
     })
