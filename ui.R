@@ -257,28 +257,61 @@ ui <- navbarPage(
                          )
                        ),
                        br(),
-                       div(class = "disclaimer mt-3",
-                           "⚠️ This tool is for educational purposes only. Always consult a healthcare professional."
-                       ),
-                       br(),
-                       div(style = "max-width: 700px; margin: 0 auto; background: #f8f9fa; border: 1px solid #dee2e6;
-             border-radius: 10px; padding: 20px 28px; text-align: left;",
-                           div(style = "text-align: center; margin-bottom: 12px;",
-                               tags$b(style = "font-size: 14px; color: #555;", "📋 Dataset Usage & Attribution Notice")
+                       div(style = "max-width: 700px; margin: 0 auto; text-align: left;",
+                           
+                           # --- Synthetic datasets notice ---
+                           div(style = "background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 10px;
+               padding: 20px 28px; margin-bottom: 12px;",
+                               div(style = "text-align: center; margin-bottom: 12px;",
+                                   tags$b(style = "font-size: 14px; color: #555;", "📋 Synthetic Dataset Usage & Attribution Notice")
+                               ),
+                               tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
+                                      tags$b("Synthetic Datasets: "),
+                                      "Alzheimer's, Parkinson's, and Type 2 Diabetes datasets used in this application are fully synthetic
+       and were generated exclusively for educational and machine learning purposes.
+       They do not represent real patient data."
+                               ),
+                               tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
+                                      tags$b("Author: "),
+                                      "Datasets created and shared by Rabie El Kharoua on Kaggle, made available under the ",
+                                      tags$a("CC BY 4.0 license", href = "https://creativecommons.org/licenses/by/4.0/", target = "_blank"),
+                                      ". Proper citation to the author is required for any reuse. Duplication within Kaggle is not permitted."
+                               ),
+                               tags$p(style = "font-size: 12px; color: #666; margin: 0; line-height: 1.6;",
+                                      "These datasets are offered without guarantees. Use of this application does not constitute medical advice."
+                               )
                            ),
-                           tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
-                                  tags$b("Synthetic Datasets: "),
-                                  "Alzheimer's, Parkinson's, and Type 2 Diabetes datasets used in this application are fully synthetic and were generated exclusively for educational and machine learning purposes. They do not represent real patient data."
-                           ),
-                           tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
-                                  tags$b("Author: "),
-                                  "Datasets created and shared by Rabie El Kharoua on Kaggle, made available under the ",
-                                  tags$a("CC BY 4.0 license", href = "https://creativecommons.org/licenses/by/4.0/", target = "_blank"),
-                                  ". Proper citation to the author is required for any reuse. Duplication within Kaggle is not permitted."
-                           ),
-                           tags$p(style = "font-size: 12px; color: #666; margin: 0; line-height: 1.6;",
-                                  "These datasets are offered without guarantees. Use of this application does not constitute medical advice."
+                           
+                           # --- Real CKD dataset notice ---
+                           div(style = "background: #f0f7ff; border: 1px solid #b8d9f5; border-radius: 10px;
+               padding: 20px 28px;",
+                               div(style = "text-align: center; margin-bottom: 12px;",
+                                   tags$b(style = "font-size: 14px; color: #2C7BB6;", "🔬 Real-World Dataset Attribution")
+                               ),
+                               tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
+                                      tags$b("Chronic Kidney Disease Dataset: "),
+                                      "The CKD calculator is also informed by a real clinical dataset collected from actual hospital patients
+       over approximately two months. This dataset contains 400 patient records with 24 features including
+       blood pressure, blood glucose, hemoglobin, creatinine, and more."
+                               ),
+                               tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
+                                      tags$b("Source: "),
+                                      "Rubini, L., Soundarapandian, P., & Eswaran, P. (2015). ",
+                                      tags$i("Chronic Kidney Disease"),
+                                      " [Dataset]. UCI Machine Learning Repository. ",
+                                      tags$a("https://doi.org/10.24432/C5G020",
+                                             href = "https://archive.ics.uci.edu/dataset/336/chronic+kidney+disease",
+                                             target = "_blank"),
+                                      ". Licensed under ",
+                                      tags$a("CC BY 4.0", href = "https://creativecommons.org/licenses/by/4.0/", target = "_blank"),
+                                      "."
+                               ),
+                               tags$p(style = "font-size: 12px; color: #666; margin: 0; line-height: 1.6;",
+                                      "This dataset contains de-identified real patient data and is used here strictly for
+       educational risk modeling purposes."
+                               )
                            )
+                       )
                        )
                    )
                )
