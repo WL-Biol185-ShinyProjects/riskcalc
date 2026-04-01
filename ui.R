@@ -258,18 +258,16 @@ ui <- navbarPage(
                        ),
                        br(),
                        div(style = "max-width: 700px; margin: 0 auto; text-align: left;",
-                           
-                           # --- Synthetic datasets notice ---
-                           div(style = "background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 10px;
-               padding: 20px 28px; margin-bottom: 12px;",
+                           div(style = "background: #f0f7ff; border: 1px solid #b8d9f5; border-radius: 10px 10px 0 0;
+             padding: 20px 28px;",
                                div(style = "text-align: center; margin-bottom: 12px;",
-                                   tags$b(style = "font-size: 14px; color: #555;", "📋 Synthetic Dataset Usage & Attribution Notice")
+                                   tags$b(style = "font-size: 14px; color: #2C7BB6;", "📋 Synthetic Dataset Usage & Attribution Notice")
                                ),
                                tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
                                       tags$b("Synthetic Datasets: "),
                                       "Alzheimer's, Parkinson's, and Type 2 Diabetes datasets used in this application are fully synthetic
-       and were generated exclusively for educational and machine learning purposes.
-       They do not represent real patient data."
+               and were generated exclusively for educational and machine learning purposes.
+               They do not represent real patient data."
                                ),
                                tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
                                       tags$b("Author: "),
@@ -277,22 +275,51 @@ ui <- navbarPage(
                                       tags$a("CC BY 4.0 license", href = "https://creativecommons.org/licenses/by/4.0/", target = "_blank"),
                                       ". Proper citation to the author is required for any reuse. Duplication within Kaggle is not permitted."
                                ),
-                               tags$p(style = "font-size: 12px; color: #666; margin: 0; line-height: 1.6;",
+                               tags$p(style = "font-size: 12px; color: #666; margin-bottom: 4px; line-height: 1.6;",
+                                      tags$b("Sources: ")
+                               ),
+                               tags$ul(style = "font-size: 12px; color: #666; line-height: 2.0; margin-top: 0; padding-left: 20px;",
+                                       tags$li(
+                                         "El Kharoua, R. (2024). ",
+                                         tags$i("Alzheimer's Disease Dataset"),
+                                         " [Data set]. Kaggle. ",
+                                         tags$a("https://doi.org/10.34740/KAGGLE/DSV/8668279",
+                                                href = "https://doi.org/10.34740/KAGGLE/DSV/8668279",
+                                                target = "_blank")
+                                       ),
+                                       tags$li(
+                                         "El Kharoua, R. (2024). ",
+                                         tags$i("Diabetes Health Dataset Analysis"),
+                                         " [Data set]. Kaggle. ",
+                                         tags$a("https://doi.org/10.34740/KAGGLE/DSV/8665939",
+                                                href = "https://doi.org/10.34740/KAGGLE/DSV/8665939",
+                                                target = "_blank")
+                                       ),
+                                       tags$li(
+                                         "El Kharoua, R. (2024). ",
+                                         tags$i("Parkinson's Disease Dataset Analysis"),
+                                         " [Data set]. Kaggle. ",
+                                         tags$a("https://doi.org/10.34740/KAGGLE/DSV/8668551",
+                                                href = "https://doi.org/10.34740/KAGGLE/DSV/8668551",
+                                                target = "_blank")
+                                       )
+                               ),
+                               tags$p(style = "font-size: 12px; color: #999; margin: 8px 0 0 0; line-height: 1.6;",
                                       "These datasets are offered without guarantees. Use of this application does not constitute medical advice."
                                )
                            ),
                            
-                           # --- Real CKD dataset notice ---
-                           div(style = "background: #f0f7ff; border: 1px solid #b8d9f5; border-radius: 10px;
-               padding: 20px 28px;",
+                           # Real-world CKD — flush bottom, rounded bottom corners only
+                           div(style = "background: #f0f7ff; border: 1px solid #b8d9f5; border-top: none;
+                 border-radius: 0 0 10px 10px; padding: 20px 28px;",
                                div(style = "text-align: center; margin-bottom: 12px;",
                                    tags$b(style = "font-size: 14px; color: #2C7BB6;", "🔬 Real-World Dataset Attribution")
                                ),
                                tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
                                       tags$b("Chronic Kidney Disease Dataset: "),
-                                      "The CKD calculator is also informed by a real clinical dataset collected from actual hospital patients
-       over approximately two months. This dataset contains 400 patient records with 24 features including
-       blood pressure, blood glucose, hemoglobin, creatinine, and more."
+                                      "The CKD calculator uses a real clinical dataset collected from actual hospital patients
+               over approximately two months, containing 400 patient records with 24 features including
+               blood pressure, blood glucose, hemoglobin, creatinine, and more."
                                ),
                                tags$p(style = "font-size: 12px; color: #666; margin-bottom: 8px; line-height: 1.6;",
                                       tags$b("Source: "),
@@ -307,11 +334,9 @@ ui <- navbarPage(
                                       "."
                                ),
                                tags$p(style = "font-size: 12px; color: #666; margin: 0; line-height: 1.6;",
-                                      "This dataset contains de-identified real patient data and is used here strictly for
-       educational risk modeling purposes."
+                                      "This dataset contains de-identified real patient data and is used here strictly for educational risk modeling purposes."
                                )
                            )
-                       )
                        )
                    )
                )
