@@ -156,26 +156,68 @@ render_disease_plots <- function(prefix, cfg, input, output) {
   ds       <- eval(cfg$dataset)
   all_vars <- c(cfg$continuous, cfg$binary)
   plot_ids <- paste0(prefix, "_p_", seq_along(all_vars))
-  pairs    <- split(plot_ids, ceiling(seq_along(plot_ids) / 2))
-  rows     <- lapply(pairs, function(pair) {
-    do.call(fluidRow, lapply(pair, function(id) column(6, plotOutput(id, height = "220px"))))
-  })
-  dist_ui <- tags$div(style = "margin-top:16px;",
-                      tags$button(class = "btn btn-outline-secondary btn-sm",
-                                  `data-toggle` = "collapse",
-                                  `data-target` = paste0("#", cfg$collapse_id),
-                                  "📊 Show / Hide Variable Distributions"),
-                      tags$div(id = cfg$collapse_id, class = "collapse",
-                               tags$div(style = "margin-top:12px; background:#fff; border-radius:8px;
-                        padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08);",
-                                        h5("Your Values vs. Population Distribution", style = "color:#444; margin-bottom:4px;"),
-                                        p("Boxplots: red dashed = your value. Bar charts: red outline = your group.",
-                                          style = "color:#888; font-size:12px; margin-bottom:12px;"),
-                                        rows
-                               )
-                      )
+  
+  n_cont      <- length(cfg$continuous)
+  n_bin       <- length(cfg$binary)
+  total       <- length(all_vars)
+  
+  # For Parkinson's, split plots: first (total-2) normal, last 2 get a divider
+  glm_plot_ids     <- plot_ids[seq_len(total - if (prefix == "pk") 2 else 0)]
+  context_plot_ids <- if (prefix == "pk") tail(plot_ids, 2) else c()
+  
+  make_pairs <- function(ids) {
+    pairs <- split(ids, ceiling(seq_along(ids) / 2))
+    lapply(pairs, function(pair) {
+      do.call(fluidRow, lapply(pair, function(id) column(6, plotOutput(id, height = "220px"))))
+    })
+  }
+  
+  glm_rows     <- make_pairs(glm_plot_ids)
+  context_rows <- make_pairs(context_plot_ids)
+  
+  # Build the divider + note (only for pk)
+  divider_ui <- if (prefix == "pk") {
+    tags$div(
+      style = "margin: 20px 0 12px 0;",
+      tags$hr(style = "border: none; border-top: 2px dashed #b8d9f5; margin: 0;"),
+      tags$div(
+        style = "background: #f0f7ff; border: 1px solid #b8d9f5; border-radius: 6px;
+                 padding: 10px 16px; margin-top: 10px; display: flex; align-items: center; gap: 10px;",
+        tags$span("ℹ️", style = "font-size: 18px;"),
+        tags$span(
+          style = "font-size: 12px; color: #2C7BB6; line-height: 1.5;",
+          tags$b("Population reference only: "),
+          "Sleep Disorders and Traumatic Brain Injury are displayed for contextual comparison but are ",
+          tags$b("not included"), " in our GLM logistic regression model."
+        )
+      )
+    )
+  } else NULL
+  
+  dist_ui <- tags$div(
+    style = "margin-top:16px;",
+    tags$button(
+      class = "btn btn-outline-secondary btn-sm",
+      `data-toggle` = "collapse",
+      `data-target` = paste0("#", cfg$collapse_id),
+      "📊 Show / Hide Variable Distributions"
+    ),
+    tags$div(
+      id = cfg$collapse_id, class = "collapse",
+      tags$div(
+        style = "margin-top:12px; background:#fff; border-radius:8px;
+                 padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08);",
+        h5("Your Values vs. Population Distribution", style = "color:#444; margin-bottom:4px;"),
+        p("Boxplots: red dashed = your value. Bar charts: gold outline = your group.",
+          style = "color:#888; font-size:12px; margin-bottom:12px;"),
+        glm_rows,
+        divider_ui,
+        context_rows
+      )
+    )
   )
-  n_cont <- length(cfg$continuous)
+  
+  # Render all plots
   for (i in seq_along(cfg$continuous)) {
     local({
       v  <- cfg$continuous[[i]]
@@ -251,8 +293,8 @@ disease_config <- list(
       list(col = "PosturalInstability", input = quote(input$pk_postural),    label = "Postural Instability"),
       list(col = "Depression",          input = quote(input$pk_depression),  label = "Depression"),
       list(col = "Diabetes",            input = quote(input$pk_diabetes),    label = "Diabetes"),
-      list(col = "SleepDisorders",      input = quote(input$pk_diabetes),    label = "Sleep Disorders"),
-      list(col = "TraumaticBrainInjury",input = quote(input$pk_diabetes),    label = "Traumatic Brain Injury")
+      list(col = "SleepDisorders",      input = quote(input$pk_sleepdisorders),    label = "Sleep Disorders"),
+      list(col = "TraumaticBrainInjury",input = quote(input$pk_traumaticbraininjury),    label = "Traumatic Brain Injury")
     )
   ),
   db = list(
