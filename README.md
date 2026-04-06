@@ -44,5 +44,7 @@ Data: El Kharoua, R. (2024). Diabetes Health Dataset Analysis [Data set]. Kaggle
 Information: https://www.cdc.gov/diabetes/about/about-type-2-diabetes.html#:~:text=Key%20points,risk%20for%20type%202%20diabetes.
 
 
-#### AI acknowledgement
+#### AI Acknowledgement
+
+Portions of this project were developed with assistance from Claude (Anthropic). AI was used to help with UI layout, CSS styling, and code formatting in the RiskCalc Shiny application. All statistical models, dataset selection, clinical interpretations, and core project decisions were made by the student team. 
 
