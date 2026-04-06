@@ -1014,12 +1014,15 @@ ui <- navbarPage(
                    div(class = "dv-label", "Analysis Overview"),
                    h3("Understanding the Visualizations"),
                    p("RiskCalc uses Generalized Linear Models (logistic regression) trained on four datasets to
-        estimate disease risk. Each calculator outputs an individualized risk probability, a heatmap
-        of variable contributions, and population-level boxplots and bar charts. So, you can see
-        how your inputs compare to datasets.")
+estimate disease risk. Each calculator outputs an individualized risk probability, a heatmap
+of variable contributions, and population-level boxplots and bar charts. So, you can see
+how your inputs compare to datasets.",
+                     style = "text-align: left; max-width: 100%; margin: 12px 0 0 0;")
                ),
                
-               # ── Three Viz Type Cards ─────────────────────────────────────────────────
+               br(),
+               
+               # ── Three Viz Type Cards ─────
                div(class = "dv-viz-grid",
                    
                    div(class = "dv-viz-card",
@@ -1276,13 +1279,11 @@ ui <- navbarPage(
   
   
   # ── ABOUT ───────────────────────────────────────────────────────────────────
-  tabPanel("About",
+  tabPanel("About Us",
            div(class = "container mt-4",
                div(class = "row justify-content-center",
                    div(class = "col-md-7",
-                       h4("About RiskCalc", style = "color:#2C7BB6; font-weight:700; font-size:18.5px;"),
-                       p("RiskCalc is a Shiny app developed for BIOL 185. It estimates risk for four major chronic diseases using GLM logistic regression models trained on publicly available Kaggle datasets."),
-                       tags$hr(),
+                    
                        h5("Team", style = "color:#2C7BB6; font-weight:700; font-size:18.5px;"),
                        br(),
                        fluidRow(
