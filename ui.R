@@ -200,6 +200,67 @@ ui <- navbarPage(
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(0,0,0,0.2);
       }
+      #   .dv-hero { background:#283867; color:white; border-radius:12px;
+              padding:36px 40px; margin-bottom:28px; text-align:center; }
+   .dv-hero .dv-label { font-size:11px; font-weight:700; letter-spacing:.12em;
+                        text-transform:uppercase; opacity:.7; margin-bottom:10px; }
+   .dv-hero h3 { font-size:26px; font-weight:700; margin-bottom:14px; }
+   .dv-hero p  { font-size:14px; opacity:.88; max-width:680px;
+                 margin:0 auto; line-height:1.7; }
+   .dv-stat-strip { display:grid; grid-template-columns:repeat(4,1fr);
+                    gap:12px; margin-bottom:28px; }
+   .dv-stat-box { background:white; border-radius:10px; border:1px solid #dde3ea;
+                  padding:16px; text-align:center;
+                  box-shadow:0 2px 6px rgba(0,0,0,.05); }
+   .dv-stat-box .dv-num { font-size:28px; font-weight:800; color:#2C7BB6; }
+   .dv-stat-box .dv-lbl { font-size:11px; color:#888; margin-top:2px; }
+   .dv-viz-grid { display:grid; grid-template-columns:repeat(3,1fr);
+                  gap:16px; margin-bottom:28px; }
+   .dv-viz-card { background:white; border-radius:10px; border:1px solid #dde3ea;
+                  padding:22px 18px 18px;
+                  box-shadow:0 2px 6px rgba(0,0,0,.06); }
+   .dv-viz-card .dv-icon-box { width:48px; height:48px; border-radius:10px;
+                               display:flex; align-items:center;
+                               justify-content:center; font-size:22px;
+                               margin-bottom:14px; }
+   .dv-card-label { font-size:10px; font-weight:700; letter-spacing:.1em;
+                    text-transform:uppercase; color:#888; margin-bottom:8px; }
+   .dv-viz-card h4 { font-size:15px; font-weight:700; color:#283867;
+                     margin-bottom:10px; }
+   .dv-viz-card p  { font-size:13px; color:#555; line-height:1.6;
+                     margin-bottom:12px; }
+   .dv-meta-row { font-size:11px; font-weight:700; letter-spacing:.08em;
+                  text-transform:uppercase; margin-bottom:4px; }
+   .dv-meta-val { font-size:12px; color:#555; line-height:1.5;
+                  margin-bottom:10px; }
+   .dv-disease-section { margin-bottom:28px; }
+   .dv-disease-section h3 { font-size:17px; font-weight:700; color:#2C7BB6;
+                            margin-bottom:14px; }
+   .dv-disease-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+   .dv-model-card { background:white; border-radius:10px; border:1px solid #dde3ea;
+                    padding:18px; box-shadow:0 2px 6px rgba(0,0,0,.05); }
+   .dv-model-title { font-size:12px; font-weight:700; text-transform:uppercase;
+                     letter-spacing:.08em; margin-bottom:10px; }
+   .dv-formula { background:#f5f7fa; border-left:3px solid #2C7BB6;
+                 padding:10px 14px; border-radius:0 6px 6px 0;
+                 font-family:'Courier New',monospace; font-size:12px;
+                 color:#283867; margin-bottom:12px; line-height:1.8; }
+   .dv-var-grid { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+   .dv-pill { font-size:11px; padding:3px 9px; border-radius:20px;
+              font-weight:600; white-space:nowrap; }
+   .dv-pill-cont { background:#e8f4fd; color:#1565c0; }
+   .dv-pill-bin  { background:#fce8e8; color:#b71c1c; }
+   .dv-mini-note { font-size:11px; color:#888; line-height:1.5;
+                   border-top:1px solid #eee; padding-top:8px; margin-top:6px; }
+   .dv-legend-row { display:flex; gap:14px; margin-bottom:10px; }
+   .dv-legend-item { font-size:12px; color:#555;
+                     display:flex; align-items:center; gap:5px; }
+   .dv-legend-dot { width:10px; height:10px; border-radius:50%;
+                    display:inline-block; }
+   .dv-disclaimer { background:#fff8e1; border-left:4px solid #f0ad4e;
+                    padding:12px 16px; border-radius:0 6px 6px 0;
+                    font-size:12px; color:#666; margin-top:20px; }
+ 
     "))
   ),
   
@@ -934,6 +995,262 @@ ui <- navbarPage(
                         p(class = "disclaimer", "Estimated using a GLM (logistic regression) model trained on the Diabetes dataset.")
                  )
                )
+           )
+  ),
+  
+  tabPanel("Data Visualizations",
+           div(class = "container mt-4",
+               
+               # ── Page Header ──────────────────────────────────────────────────────────
+               div(class = "text-center", style = "margin-bottom:24px;",
+                   h2("Data Visualizations",
+                      style = "font-weight:700; color:#2C7BB6; margin-bottom:6px;"),
+                   p("Statistical methods, models, and variable distributions used across all four disease calculators.",
+                     style = "color:#666; font-size:15px;")
+               ),
+               
+               # ── Hero Banner ──────────────────────────────────────────────────────────
+               div(class = "dv-hero",
+                   div(class = "dv-label", "Analysis Overview"),
+                   h3("Understanding the Visualizations"),
+                   p("RiskCalc uses Generalized Linear Models (logistic regression) trained on four datasets to
+        estimate disease risk. Each calculator outputs an individualized risk probability, a heatmap
+        of variable contributions, and population-level boxplots and bar charts. So, you can see
+        how your inputs compare to datasets.")
+               ),
+               
+               # ── Three Viz Type Cards ─────────────────────────────────────────────────
+               div(class = "dv-viz-grid",
+                   
+                   div(class = "dv-viz-card",
+                       div(class = "dv-icon-box", style = "background:#e8f4fd;", "📈"),
+                       div(class = "dv-card-label", "GLM Output"),
+                       h4("Risk Probability"),
+                       p("A logistic regression model converts your input values into a probability between 0–100%.
+           The model was trained on labeled patient data with a binary outcome (diagnosed / not diagnosed)."),
+                       div(class = "dv-meta-row", style = "color:#2C7BB6;", "How to interpret"),
+                       div(class = "dv-meta-val",
+                           "< 30% = Low · 30–60% = Moderate · ≥ 60% = High risk.
+           The progress bar color (green / amber / red) reflects your risk tier.")
+                   ),
+                   
+                   div(class = "dv-viz-card",
+                       div(class = "dv-icon-box", style = "background:#fce8e8;", "🔥"),
+                       div(class = "dv-card-label", "Contribution"),
+                       h4("Risk Factor Heatmap"),
+                       p("Each predictor's contribution is calculated as the coefficient × deviation from the dataset mean.
+           Red = increases risk relative to average. Blue = decreases risk. Bar length shows relative importance."),
+                       div(class = "dv-meta-row", style = "color:#e74c3c;", "How to interpret"),
+                       div(class = "dv-meta-val",
+                           "Wider red bars mean that variable is the main driver of your elevated risk.
+           Wider blue bars show factors protecting you relative to the average patient.")
+                   ),
+                   
+                   div(class = "dv-viz-card",
+                       div(class = "dv-icon-box", style = "background:#eafaf1;", "📦"),
+                       div(class = "dv-card-label", "Distribution"),
+                       h4("Boxplots & Bar Charts"),
+                       p("Continuous variables (e.g., MMSE, GFR, HbA1c) appear as boxplots split by diagnosis group.
+           Binary variables (e.g., tremor, smoking) appear as bar charts showing disease prevalence
+           within each group."),
+                       div(class = "dv-meta-row", style = "color:#27ae60;", "How to interpret"),
+                       div(class = "dv-meta-val",
+                           "Dashed red line = your value on boxplots. Gold outline = your group on bar charts.
+           95% confidence intervals are shown on all bars.")
+                   )
+               ),
+               
+               # ── Alzheimer's ──────────────────────────────────────────────────────────
+               div(class = "dv-disease-section",
+                   h3("🧠 Alzheimer's Disease Model"),
+                   div(class = "dv-disease-grid",
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#7f77dd;", "GLM Formula"),
+                           div(class = "dv-formula",
+                               "logit(P) = β₀", tags$br(),
+                               "+ β₁·FunctionalAssessment", tags$br(),
+                               "+ β₂·ADL", tags$br(),
+                               "+ β₃·MemoryComplaints", tags$br(),
+                               "+ β₄·MMSE", tags$br(),
+                               "+ β₅·BehavioralProblems", tags$br(),
+                               "+ β₆·EducationLevel"
+                           ),
+                           div(class = "dv-meta-row", style = "color:#7f77dd;", "Data source"),
+                           div(class = "dv-meta-val",
+                               "Synthetic dataset (El Kharoua, Kaggle 2024). Binary outcome: Diagnosis (0 / 1).")
+                       ),
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#7f77dd;", "Variables"),
+                           div(class = "dv-legend-row",
+                               div(class = "dv-legend-item",
+                                   span(class = "dv-legend-dot", style = "background:#1565c0;"), "Continuous"),
+                               div(class = "dv-legend-item",
+                                   span(class = "dv-legend-dot", style = "background:#b71c1c;"), "Binary")
+                           ),
+                           div(class = "dv-var-grid",
+                               span(class = "dv-pill dv-pill-cont", "Functional Score (0–10)"),
+                               span(class = "dv-pill dv-pill-cont", "ADL Score (0–10)"),
+                               span(class = "dv-pill dv-pill-cont", "MMSE (0–30)"),
+                               span(class = "dv-pill dv-pill-cont", "Education Level"),
+                               span(class = "dv-pill dv-pill-bin",  "Memory Complaints"),
+                               span(class = "dv-pill dv-pill-bin",  "Behavioral Problems")
+                           ),
+                           div(class = "dv-mini-note",
+                               "Lower MMSE and ADL scores are strong positive predictors of Alzheimer's in this model.")
+                       )
+                   )
+               ),
+               
+               # ── CKD ──────────────────────────────────────────────────────────────────
+               div(class = "dv-disease-section",
+                   h3("🫘 Chronic Kidney Disease Model"),
+                   div(class = "dv-disease-grid",
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#d4537e;", "GLM Formula"),
+                           div(class = "dv-formula",
+                               "logit(P) = β₀", tags$br(),
+                               "+ β₁·SerumCreatinine + β₂·GFR", tags$br(),
+                               "+ β₃·Itching + β₄·FastingBloodSugar", tags$br(),
+                               "+ β₅·MuscleCramps + β₆·BUNLevels", tags$br(),
+                               "+ β₇·ProteinInUrine + β₈·SystolicBP", tags$br(),
+                               "+ β₉·HbA1c + β₁₀·BMI"
+                           ),
+                           div(class = "dv-meta-row", style = "color:#d4537e;", "Data source"),
+                           div(class = "dv-meta-val",
+                               "Real clinical data — 400 hospital patients (UCI ML Repository, Rubini et al. 2015, CC BY 4.0).")
+                       ),
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#d4537e;", "Variables"),
+                           div(class = "dv-legend-row",
+                               div(class = "dv-legend-item",
+                                   span(class = "dv-legend-dot", style = "background:#1565c0;"), "Continuous")
+                           ),
+                           div(class = "dv-var-grid",
+                               span(class = "dv-pill dv-pill-cont", "Serum Creatinine (mg/dL)"),
+                               span(class = "dv-pill dv-pill-cont", "GFR (mL/min)"),
+                               span(class = "dv-pill dv-pill-cont", "Fasting Blood Sugar"),
+                               span(class = "dv-pill dv-pill-cont", "BUN Levels (mg/dL)"),
+                               span(class = "dv-pill dv-pill-cont", "Protein in Urine (g/day)"),
+                               span(class = "dv-pill dv-pill-cont", "HbA1c (%)"),
+                               span(class = "dv-pill dv-pill-cont", "Itching Severity (0–10)"),
+                               span(class = "dv-pill dv-pill-cont", "Muscle Cramps (0–7/wk)"),
+                               span(class = "dv-pill dv-pill-cont", "Systolic BP (mmHg)"),
+                               span(class = "dv-pill dv-pill-cont", "BMI")
+                           ),
+                           div(class = "dv-mini-note",
+                               "GFR is inversely predictive — lower filtration rate = higher CKD risk.
+             Only disease with all-continuous predictors.")
+                       )
+                   )
+               ),
+               
+               # ── Parkinson's ──────────────────────────────────────────────────────────
+               div(class = "dv-disease-section",
+                   h3("🚶 Parkinson's Disease Model"),
+                   div(class = "dv-disease-grid",
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#185fa5;", "GLM Formula"),
+                           div(class = "dv-formula",
+                               "logit(P) = β₀", tags$br(),
+                               "+ β₁·UPDRS + β₂·Tremor", tags$br(),
+                               "+ β₃·FunctionalAssessment + β₄·Rigidity", tags$br(),
+                               "+ β₅·Bradykinesia + β₆·MoCA", tags$br(),
+                               "+ β₇·PosturalInstability + β₈·Age", tags$br(),
+                               "+ β₉·Depression + β₁₀·Diabetes"
+                           ),
+                           div(class = "dv-meta-row", style = "color:#185fa5;", "Data source"),
+                           div(class = "dv-meta-val",
+                               "Synthetic dataset (El Kharoua, Kaggle 2024). SleepDisorders & TraumaticBrainInjury shown
+             in distribution plots for context but excluded from the model.")
+                       ),
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#185fa5;", "Variables"),
+                           div(class = "dv-legend-row",
+                               div(class = "dv-legend-item",
+                                   span(class = "dv-legend-dot", style = "background:#1565c0;"), "Continuous"),
+                               div(class = "dv-legend-item",
+                                   span(class = "dv-legend-dot", style = "background:#b71c1c;"), "Binary")
+                           ),
+                           div(class = "dv-var-grid",
+                               span(class = "dv-pill dv-pill-cont", "UPDRS Score (0–200)"),
+                               span(class = "dv-pill dv-pill-cont", "Functional Assessment (0–10)"),
+                               span(class = "dv-pill dv-pill-cont", "MoCA Score (0–30)"),
+                               span(class = "dv-pill dv-pill-cont", "Age (years)"),
+                               span(class = "dv-pill dv-pill-bin",  "Tremor"),
+                               span(class = "dv-pill dv-pill-bin",  "Rigidity"),
+                               span(class = "dv-pill dv-pill-bin",  "Bradykinesia"),
+                               span(class = "dv-pill dv-pill-bin",  "Postural Instability"),
+                               span(class = "dv-pill dv-pill-bin",  "Depression"),
+                               span(class = "dv-pill dv-pill-bin",  "Diabetes")
+                           ),
+                           div(class = "dv-mini-note",
+                               "UPDRS and the classic motor triad (Tremor, Rigidity, Bradykinesia) are the
+             strongest predictors in this model.")
+                       )
+                   )
+               ),
+               
+               # ── Diabetes ─────────────────────────────────────────────────────────────
+               div(class = "dv-disease-section",
+                   h3("💉 Type 2 Diabetes Model"),
+                   div(class = "dv-disease-grid",
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#993556;", "GLM Formula"),
+                           div(class = "dv-formula",
+                               "logit(P) = β₀", tags$br(),
+                               "+ β₁·FastingBloodSugar", tags$br(),
+                               "+ β₂·HbA1c", tags$br(),
+                               "+ β₃·FrequentUrination", tags$br(),
+                               "+ β₄·Hypertension", tags$br(),
+                               "+ β₅·ExcessiveThirst", tags$br(),
+                               "+ β₆·UnexplainedWeightLoss", tags$br(),
+                               "+ β₇·Smoking"
+                           ),
+                           div(class = "dv-meta-row", style = "color:#993556;", "Data source"),
+                           div(class = "dv-meta-val",
+                               "Synthetic dataset (El Kharoua, Kaggle 2024). BlurredVision collected in UI
+             but excluded from the final model formula.")
+                       ),
+                       
+                       div(class = "dv-model-card",
+                           div(class = "dv-model-title", style = "color:#993556;", "Variables"),
+                           div(class = "dv-legend-row",
+                               div(class = "dv-legend-item",
+                                   span(class = "dv-legend-dot", style = "background:#1565c0;"), "Continuous"),
+                               div(class = "dv-legend-item",
+                                   span(class = "dv-legend-dot", style = "background:#b71c1c;"), "Binary")
+                           ),
+                           div(class = "dv-var-grid",
+                               span(class = "dv-pill dv-pill-cont", "Fasting Blood Sugar (mg/dL)"),
+                               span(class = "dv-pill dv-pill-cont", "HbA1c (%)"),
+                               span(class = "dv-pill dv-pill-bin",  "Frequent Urination"),
+                               span(class = "dv-pill dv-pill-bin",  "Excessive Thirst"),
+                               span(class = "dv-pill dv-pill-bin",  "Unexplained Weight Loss"),
+                               span(class = "dv-pill dv-pill-bin",  "Hypertension"),
+                               span(class = "dv-pill dv-pill-bin",  "Smoking")
+                           ),
+                           div(class = "dv-mini-note",
+                               "HbA1c is the single strongest predictor — it reflects 2–3 months of average
+             blood sugar, capturing chronic elevation.")
+                       )
+                   )
+               ),
+               
+               # ── Disclaimer ───────────────────────────────────────────────────────────
+               div(class = "dv-disclaimer",
+                   tags$b("Disclaimer: "),
+                   "All models are logistic regression (GLM, family = binomial) trained in R.
+       Results are for educational purposes only and do not constitute medical advice.
+       Three of four datasets are fully synthetic."
+               ),
+               br()
            )
   ),
   
