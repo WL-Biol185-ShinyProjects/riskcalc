@@ -490,8 +490,7 @@ ui <- navbarPage(
                                    tags$li("Alzheimer's accounts for 60-80% of dementia cases"),
                                    tags$li("Women are more likely to develop Alzheimer's"),
                                    tags$li("Early-onset (before 65) affects ~200,000 Americans"),
-                                   tags$li("No cure exists, but early detection helps planning"),
-                                   tags$li("Brain changes begin 20+ years before symptoms")
+                                   tags$li("No cure exists, but early detection helps planning")
                            )
                        ),
                        
