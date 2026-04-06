@@ -1,7 +1,6 @@
 ### Chronic Disease Risk Calculator
-
+#### Aaron Cordova, Ishaan Bhadouria, Jaehun Kim, and Dias Shymbay
 ## Estimate risk for four major chronic diseases using clinically-informed inputs.
-
 
 
 ### Alzheimer's Disease
@@ -43,3 +42,7 @@ Our GLM includes the following variables: Fasting Blood Sugar, HbA1c, Frequent U
 Data: El Kharoua, R. (2024). Diabetes Health Dataset Analysis [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/8665939
 
 Information: https://www.cdc.gov/diabetes/about/about-type-2-diabetes.html#:~:text=Key%20points,risk%20for%20type%202%20diabetes.
+
+
+#### AI acknowledgement
+
