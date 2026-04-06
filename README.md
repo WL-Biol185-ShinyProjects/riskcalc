@@ -1,103 +1,45 @@
-# riskcalc
-Risk calculator of chronic diseases based on age, BMI, etc
-CLASS 2/18 NOTES: look for normal distributions within each variable, if not normal may need to look at other ways
+### Chronic Disease Risk Calculator
 
-NEED TO ADD: Map (new dataset), quiz, info page (indiv. variable graphs - green/red variables), about me, pretty interface, check if variables are independent
-
-Alzheimer’s Rates by Country 2026:
-https://worldpopulationreview.com/country-rankings/alzheimers-rates-by-country
-
-Alzheimer's Disease Mortality in the USA
-https://www.cdc.gov/nchs/state-stats/deaths/alzheimers.html
-
-#------------------------------------------------------------------------------------------------------------------------------
-
-Alzheimers
-https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset?resource=download
-Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
+## Estimate risk for four major chronic diseases using clinically-informed inputs.
 
 
-#------------------------------------------------------------------------------------------------------------------------------
 
-Chronic Kidney Disease
-Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
-family history of diabetes (0 - no, 1 - yes), cholesterol total, cholesterol(LDL), cholesterol(HDL), cholesterol(TAG), 
+### Alzheimer's Disease
+Alzheimer's Disease is the progressive neurological disorder affecting memory, thinking, and daily function.
 
+Our GLM includes the following variables: Functional Assessment Score, Activities of Daily Living, MMSE score, Memory Complaints, Behavioral Problems, and Education Level  
 
-#------------------------------------------------------------------------------------------------------------------------------
+Data: El Kharoua, R. (2024). Alzheimer's Disease Dataset [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/8668279
 
-Parkinson's
-https://www.kaggle.com/code/fratzcan/parkinson-s-disease-prediction/input
-Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
+Information: https://www.alz.org/alzheimers-dementia/what-is-alzheimers#
 
+### Chronic Kidney Disease
+Chronic Kidney Disease is the gradual loss of kidney function preventing filtration of waste and toxins from blood.
 
-#-------------
-Code: 
-parkinsons <- read.csv("data/parkinsons_disease_data.csv")
-head(parkinsons)
+Our GLM includes the following variables: Serum Creatinine, GFR, Fasting Blood Sugar, BUN Levels, Protein in Urine, HbA1c, Itching Severity, Muscle Cramps, Edema (Swelling), Systolic BP, BMI
 
-#------------------------------------------------------------------------------------------------------------------------------
+Data: Rubini, L., Soundarapandian, P., & Eswaran, P. (2015). Chronic Kidney Disease [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5G020
 
-Diabetes
-Sliders for: age, gender, ethnicity, BMI, smoking (0 - no, 1 - yes), alcohol consumption, physical activity, diet quality, 
+Information: https://www.kidney.org/
 
 
-#------------------------------------------------------------------------------------------------------------------------------
+### Parkinson's Disease
+
+Parkinson's Disease is the progressive movement disorder caused by loss of dopamine-producing brain cells.
+
+Our GLM includes the following variables: UPDRS Score, Tremor Present, Rigidit Present, Bradykenesia Present, Postural Instability, Functional Assessment Score, MoCA Score, Age, Depression, and Diabetes
+
+Data: El Kharoua, R. (2024). Parkinson's Disease Dataset Analysis [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/8668551
+
+Information: https://www.michaeljfox.org/
 
 
-Key for columns: 
-- **PatientID**: A unique identifier assigned to each patient (1 to 1,659).
-- **Age**: The age of the patients ranges from 20 to 90 years.
-- **Gender**: Gender of the patients, where 0 represents Male and 1 represents Female.
-- **Ethnicity**: The ethnicity of the patients, coded as follows:
-  - 0: Caucasian
-  - 1: African American
-  - 2: Asian
-  - 3: Other
-- **SocioeconomicStatus**: The socioeconomic status of the patients
-- **EducationLevel**: The education level of the patients, coded as follows:
-  - 0: None
-  - 1: High School
-  - 2: Bachelor's
-  - 3: Higher
-- **BMI**: Body Mass Index of the patients, ranging from 15 to 40.
-- **Smoking**: Smoking status, where 0 indicates No and 1 indicates Yes.
-- **AlcoholConsumption**: Weekly alcohol consumption in units, ranging from 0 to 20.
-- **PhysicalActivity**: Weekly physical activity in hours, ranging from 0 to 10.
-- **DietQuality**: Diet quality score, ranging from 0 to 10.
-- **SleepQuality**: Sleep quality score, ranging from 4 to 10.
-- **FamilyHistoryKidneyDisease**: Family history of kidney disease, where 0 indicates No and 1 indicates Yes.
-- **FamilyHistoryHypertension**: Family history of hypertension, where 0 indicates No and 1 indicates Yes.
-- **FamilyHistoryDiabetes**: Family history of diabetes, where 0 indicates No and 1 indicates Yes.
-- **PreviousAcuteKidneyInjury**: History of previous acute kidney injury, where 0 indicates No and 1 indicates Yes.
-- **UrinaryTractInfections**: History of urinary tract infections, where 0 indicates No and 1 indicates Yes.
-- **SystolicBP**: Systolic blood pressure, ranging from 90 to 180 mmHg.
-- **DiastolicBP**: Diastolic blood pressure, ranging from 60 to 120 mmHg.
-- **FastingBloodSugar**: Fasting blood sugar levels, ranging from 70 to 200 mg/dL.
-- **HbA1c**: Hemoglobin A1c levels, ranging from 4.0% to 10.0%.
-- **SerumCreatinine**: Serum creatinine levels, ranging from 0.5 to 5.0 mg/dL.
-- **BUNLevels**: Blood Urea Nitrogen levels, ranging from 5 to 50 mg/dL.
-- **GFR**: Glomerular Filtration Rate, ranging from 15 to 120 mL/min/1.73 m².
-- **ProteinInUrine**: Protein levels in urine, ranging from 0 to 5 g/day.
-- **ACR**: Albumin-to-Creatinine Ratio, ranging from 0 to 300 mg/g.
-- **SerumElectrolytesSodium**: Serum sodium levels, ranging from 135 to 145 mEq/L.
-- **SerumElectrolytesPotassium**: Serum potassium levels, ranging from 3.5 to 5.5 mEq/L.
-- **SerumElectrolytesCalcium**: Serum calcium levels, ranging from 8.5 to 10.5 mg/dL.
-- **SerumElectrolytesPhosphorus**: Serum phosphorus levels, ranging from 2.5 to 4.5 mg/dL.
-- **HemoglobinLevels**: Hemoglobin levels, ranging from 10 to 18 g/dL.
-- **CholesterolTotal**: Total cholesterol levels, ranging from 150 to 300 mg/dL.
-- **CholesterolLDL**: Low-density lipoprotein cholesterol levels, ranging from 50 to 200 mg/dL.
-- **CholesterolHDL**: High-density lipoprotein cholesterol levels, ranging from 20 to 100 mg/dL.
-- **CholesterolTriglycerides**: Triglycerides levels, ranging from 50 to 400 mg/dL.
-- **ACEInhibitors**: Use of ACE inhibitors, where 0 indicates No and 1 indicates Yes.
-- **Diuretics**: Use of diuretics, where 0 indicates No and 1 indicates Yes.
-- **NSAIDsUse**: Frequency of NSAIDs use, ranging from 0 to 10 times per week.
-- **Statins**: Use of statins, where 0 indicates No and 1 indicates Yes.
-- **AntidiabeticMedications**: Use of antidiabetic medications, where 0 indicates No and 1 indicates Yes.
-- **Edema**: Presence of edema, where 0 indicates No and 1 indicates Yes.
-- **FatigueLevels**: Fatigue levels, ranging from 0 to 10.
-- **NauseaVomiting**: Frequency of nausea and vomiting, ranging from 0 to 7 times per week.
-- **MuscleCramps**: Frequency of muscle cramps, ranging from 0 to 7 times per week.
-- **Itching**: Itching severity, ranging from 0 to 10.
-- **QualityOfLifeScore**: Quality of life score, ranging from 0 to 100.
-- **HeavyMetalsExposure**: Exposure to heavy metals, where 0 indicates No and 1 indicates Yes.
+### Type 2 Diabetes
+
+Type 2 Diabetes is the progressive movement disorder caused by loss of dopamine-producing brain cells.
+
+Our GLM includes the following variables: Fasting Blood Sugar, HbA1c, Frequent Urination, Excessive Thirst, Unexplained Weight Loss, Blurred Vision, Hypertension, and Smoking
+
+Data: El Kharoua, R. (2024). Diabetes Health Dataset Analysis [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/8665939
+
+Information: https://www.cdc.gov/diabetes/about/about-type-2-diabetes.html#:~:text=Key%20points,risk%20for%20type%202%20diabetes.
